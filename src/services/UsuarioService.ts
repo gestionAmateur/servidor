@@ -1,7 +1,8 @@
 import { Repository } from 'typeorm';
+import AppDataSource from '@/config/ormconfig';
 import { Usuario } from '@/entities/UsuarioEntity';
 import { HistorialEquipo } from '@/entities/HistorialEquipoEntity';
-import AppDataSource from '@/config/ormconfig';
+import { sesionService } from './misc/SesionService';
 
 export class UsuarioService {
     private readonly usuarioRepository: Repository<Usuario>;
@@ -21,28 +22,24 @@ export class UsuarioService {
     async getUsuarioById(id: number): Promise<Usuario | null> {
         return await this.usuarioRepository.findOne({
             where: { id },
-            relations: ['cuentasInvocador', 'equipoActual', 'historial'],
+            relations: ['cuentasInvocador', 'equipoActual', 'historial.equipo'],
         });
     }
 
     async getUsuarioByDiscordId(discordId: string): Promise<Usuario | null> {
         return await this.usuarioRepository.findOne({
             where: { discordId },
-            relations: ['cuentasInvocador', 'equipoActual', 'historial'],
+            relations: ['cuentasInvocador', 'equipoActual', 'historial.equipo'],
         });
     }
 
     async getUsuarioDetails(id: number): Promise<any> {
-        const usuario = await this.usuarioRepository.findOne({
-            where: { id },
-            relations: ['cuentasInvocador', 'equipoActual', 'historial.equipo'],
-        });
+        const usuario = await this.getUsuarioById(id);
 
         if (!usuario) {
             return null;
         }
 
-        const equipoActual = usuario.equipoActual;
         const equiposHistorial = await this.historialEquipoRepository.find({
             where: { usuario: { id } },
             relations: ['equipo'],
@@ -53,7 +50,7 @@ export class UsuarioService {
         return {
             usuario,
             cuentasInvocador: usuario.cuentasInvocador,
-            equipoActual,
+            equipoActual: usuario.equipoActual,
             equiposHistorial: equipos,
         };
     }
@@ -72,5 +69,15 @@ export class UsuarioService {
 
     async getAllUsuarios(): Promise<Usuario[]> {
         return await this.usuarioRepository.find();
+    }
+
+    async getUsuarioDetailsByToken(token: string): Promise<any> {
+        const sesion = await sesionService.getSesion(token);
+
+        if (!sesion || !sesion.usuario) {
+            return null;
+        }
+
+        return await this.getUsuarioDetails(sesion.usuario.id);
     }
 }

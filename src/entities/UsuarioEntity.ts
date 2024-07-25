@@ -8,7 +8,7 @@ import {
 import { EquipoCompetitivo } from '@/entities/EquipoCompetitivoEntity';
 import { CuentaInvocador } from '@/entities/CuentaInvocadorEntity';
 import { HistorialEquipo } from '@/entities/HistorialEquipoEntity';
-import { Session } from '@/entities/misc/SessionEntity';
+import { Sesion } from '@/entities/misc/SesionEntity';
 
 @Entity('usuarios')
 export class Usuario {
@@ -38,6 +38,6 @@ export class Usuario {
     @OneToMany(() => HistorialEquipo, (historial) => historial.usuario)
     historial!: HistorialEquipo[];
 
-    @OneToMany(() => Session, (session) => session.usuario)
-    sessions!: Session[];
+    @OneToMany(() => Sesion, (sesion) => sesion.usuario)
+    sesiones!: Sesion[];
 }

@@ -2,8 +2,8 @@ import { Request, Response } from 'express';
 import axios from 'axios';
 import { AuthService } from '@/services/misc/AuthService';
 import { UsuarioService } from '@/services/UsuarioService';
-import { sessionService } from '@/services/misc/SessionService';
 import tryCatch from '@/utils/tryCatch';
+import { sesionService } from '@/services/misc/SesionService';
 
 const usuarioService = new UsuarioService();
 
@@ -69,13 +69,12 @@ export class AuthController {
                     id: discordId,
                     username: nombre,
                     email,
-                    avatar: discordAvatar
+                    avatar: discordAvatar,
                 } = userResponse.data;
 
                 // Buscar al usuario por discordId
-                const usuario = await usuarioService.getUsuarioByDiscordId(
-                    discordId,
-                );
+                const usuario =
+                    await usuarioService.getUsuarioByDiscordId(discordId);
                 let usuarioFinal;
                 if (!usuario) {
                     // Crear un nuevo usuario si no existe
@@ -93,9 +92,9 @@ export class AuthController {
                 // Generar un token para el usuario
                 const token = AuthService.generateToken(usuarioFinal);
 
-                const expiresAt = new Date(Date.now() + 2592000); //30 dias
-
-                await sessionService.createSession(usuarioFinal.id, token, expiresAt);
+                const createdAt = Math.floor(Date.now() / 1000);
+                const expiredAt = createdAt + 2592000;
+                await sesionService.createSesion({usuario: { id: usuarioFinal.id } as any, token: token, createdAt: createdAt, expiredAt: expiredAt});
 
                 res.redirect(`http://localhost:5173?token=${token}`);
             } catch (error) {
