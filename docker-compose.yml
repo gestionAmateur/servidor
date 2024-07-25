@@ -1,0 +1,50 @@
+version: '3.8'
+services:
+    # api:
+    #     container_name: appgestorapi
+    #     image: appgestorapi:latest
+    #     build:
+    #         context: ./servidor
+    #         dockerfile: Dockerfile
+    #     ports:
+    #         - "3000:3000"
+    #     environment:
+    #         - DOCKER_CONTAINER=1
+    #     env_file:
+    #         - .env
+    #     depends_on:
+    #         - database
+    #     networks:
+    #         - appgestornetwork
+
+    # cliente:
+    #     container_name: appgestorcliente
+    #     image: appgestorcliente:latest
+    #     build:
+    #         context: ./cliente
+    #         dockerfile: Dockerfile
+    #     ports:
+    #         - "5000:5000"
+    #     environment:
+    #         - DOCKER_CONTAINER=1
+    #     depends_on:
+    #         - api
+    #     networks:
+    #         - appgestornetwork
+
+    database:
+        container_name: gestionamateurdatabase
+        image: mariadb:latest
+        environment:
+            - MARIADB_ROOT_PASSWORD=${CONTRASENASQL}
+            - MARIADB_DATABASE=${DATABASESQL}
+        ports:
+            - '3306:3306'
+        volumes:
+            - ./datos_mariadb/data:/var/lib/mysql
+        networks:
+            - gestionamateurnetwork
+
+networks:
+    gestionamateurnetwork:
+        driver: bridge
