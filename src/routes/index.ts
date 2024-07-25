@@ -4,6 +4,8 @@ import { PartidaController } from '@/controllers/PartidaController';
 import { ParticipanteController } from '@/controllers/ParticipanteController';
 import { ObjetivoController } from '@/controllers/ObjetivoController';
 import { HistorialEquipoController } from '@/controllers/HistorialEquipoController';
+
+import { AuthController } from '@/controllers/misc/AuthController';
 import { authMiddleware } from '@/middlewares/auth';
 
 const router = express.Router();
@@ -85,5 +87,8 @@ router.get(
     authMiddleware,
     HistorialEquipoController.getAllHistorialEquipos,
 );
+
+router.get('/registro', AuthController.sendCallback);
+router.get('/callback', AuthController.callback);
 
 export default router;

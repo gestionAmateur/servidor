@@ -20,9 +20,9 @@ const swaggerDocument = JSON.parse(
 app.use(express.json());
 app.use(
     cors({
-        //origin: ["http://example.com", "https://anotherdomain.com"],
-        //methods: ["GET", "POST"],
-        //allowedHeaders: ["Content-Type", "Authorization"],
+        // origin: '*', // Permite solicitudes desde el frontend en desarrollo
+        // methods: ['GET', 'POST', 'PUT', 'DELETE'], // Permite métodos específicos
+        // allowedHeaders: ['Content-Type', 'Authorization', 'Origin', 'X-Requested-With', 'Accept'], // Permite encabezados específicos
     }),
 );
 app.use(helmet());

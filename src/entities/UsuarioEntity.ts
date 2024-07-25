@@ -8,6 +8,7 @@ import {
 import { EquipoCompetitivo } from '@/entities/EquipoCompetitivoEntity';
 import { CuentaInvocador } from '@/entities/CuentaInvocadorEntity';
 import { HistorialEquipo } from '@/entities/HistorialEquipoEntity';
+import { Session } from '@/entities/misc/SessionEntity';
 
 @Entity('usuarios')
 export class Usuario {
@@ -16,6 +17,9 @@ export class Usuario {
 
     @Column({ type: 'varchar', length: 64, unique: true })
     discordId!: string;
+
+    @Column({ type: 'varchar', length: 64, unique: true })
+    discordAvatar!: string;
 
     @Column({ type: 'varchar', length: 128 })
     nombre!: string;
@@ -33,4 +37,7 @@ export class Usuario {
 
     @OneToMany(() => HistorialEquipo, (historial) => historial.usuario)
     historial!: HistorialEquipo[];
+
+    @OneToMany(() => Session, (session) => session.usuario)
+    sessions!: Session[];
 }

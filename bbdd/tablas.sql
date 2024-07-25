@@ -18,6 +18,7 @@ CREATE TABLE categorias_partida (
 CREATE TABLE usuarios (
     id INT AUTO_INCREMENT PRIMARY KEY,
     discord_id VARCHAR(64) NOT NULL UNIQUE,
+    discord_avatar VARCHAR(64) NOT NULL,
     nombre VARCHAR(128) NOT NULL,
     email VARCHAR(128) UNIQUE,
     equipo_actual_id INT NULL,
@@ -102,7 +103,7 @@ CREATE TABLE bans (
     id INT AUTO_INCREMENT PRIMARY KEY,
     equipo_id INT NOT NULL,
     champion_id INT UNSIGNED,
-    pick_turn TINYINT UNSIGNED,¡
+    pick_turn TINYINT UNSIGNED,
     FOREIGN KEY (equipo_id) REFERENCES equipos_competitivos(id),
     INDEX idx_champion_id (champion_id)
 ) ENGINE = InnoDB;
@@ -111,7 +112,7 @@ CREATE TABLE bans (
 CREATE TABLE objetivos (
     id INT AUTO_INCREMENT PRIMARY KEY,
     equipo_id INT NOT NULL,
-    type VARCHAR(64),¡
+    type VARCHAR(64),
     first BOOLEAN,
     kills INT UNSIGNED,
     FOREIGN KEY (equipo_id) REFERENCES equipos_competitivos(id)
@@ -129,6 +130,18 @@ CREATE TABLE historial_equipo (
     INDEX idx_usuario_id (usuario_id),
     INDEX idx_equipo_id (equipo_id)
 ) ENGINE = InnoDB;
+
+-- Tabla `sessions`
+CREATE TABLE sessions (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    user_id INT NOT NULL,
+    token VARCHAR(255) NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    expires_at TIMESTAMP NOT NULL,
+    FOREIGN KEY (user_id) REFERENCES usuarios(id)
+) ENGINE = InnoDB;
+
+
 
 -- Índices adicionales para mejorar el rendimiento
 CREATE INDEX idx_nombre_categoria ON categorias_partida (nombre);

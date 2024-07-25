@@ -25,6 +25,13 @@ export class UsuarioService {
         });
     }
 
+    async getUsuarioByDiscordId(discordId: string): Promise<Usuario | null> {
+        return await this.usuarioRepository.findOne({
+            where: { discordId },
+            relations: ['cuentasInvocador', 'equipoActual', 'historial'],
+        });
+    }
+
     async getUsuarioDetails(id: number): Promise<any> {
         const usuario = await this.usuarioRepository.findOne({
             where: { id },
