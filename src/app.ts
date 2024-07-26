@@ -17,14 +17,21 @@ const swaggerDocument = JSON.parse(
     fs.readFileSync(path.join(__dirname, 'swagger.json'), 'utf8'),
 );
 
-app.use(express.json());
 app.use(
     cors({
-        // origin: '*', // Permite solicitudes desde el frontend en desarrollo
-        // methods: ['GET', 'POST', 'PUT', 'DELETE'], // Permite métodos específicos
-        // allowedHeaders: ['Content-Type', 'Authorization', 'Origin', 'X-Requested-With', 'Accept'], // Permite encabezados específicos
+        origin: 'http://localhost:5173',
+        methods: ['GET', 'POST', 'PUT', 'DELETE'],
+        allowedHeaders: [
+            'Content-Type',
+            'Authorization',
+            'Origin',
+            'X-Requested-With',
+            'Accept',
+        ],
     }),
 );
+
+app.use(express.json());
 app.use(helmet());
 app.use(morgan('dev'));
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));

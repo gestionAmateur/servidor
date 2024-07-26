@@ -66,21 +66,26 @@ export class UsuarioController {
     static getUsuarioDetailsByToken = tryCatch(
         async (req: Request, res: Response): Promise<void> => {
             const token = req.params.token;
-    
+
             if (!token) {
                 resultHandler(
-                    { status: 400, success: false, result: 'Token is required' },
+                    {
+                        status: 400,
+                        success: false,
+                        result: 'Token is required',
+                    },
                     res,
                 );
                 return;
             }
-    
-            const usuarioDetails = await usuarioService.getUsuarioDetailsByToken(token);
-    
+
+            const usuarioDetails =
+                await usuarioService.getUsuarioDetailsByToken(token);
+
             if (!usuarioDetails) {
                 throw new NotFoundError('Usuario no encontrado.');
             }
-    
+
             resultHandler(
                 { status: 200, success: true, result: usuarioDetails },
                 res,

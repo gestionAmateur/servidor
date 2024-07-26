@@ -94,7 +94,12 @@ export class AuthController {
 
                 const createdAt = Math.floor(Date.now() / 1000);
                 const expiredAt = createdAt + 2592000;
-                await sesionService.createSesion({usuario: { id: usuarioFinal.id } as any, token: token, createdAt: createdAt, expiredAt: expiredAt});
+                await sesionService.createSesion({
+                    usuario: { id: usuarioFinal.id } as any,
+                    token: token,
+                    createdAt: createdAt,
+                    expiredAt: expiredAt,
+                });
 
                 res.redirect(`http://localhost:5173?token=${token}`);
             } catch (error) {

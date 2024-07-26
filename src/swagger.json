@@ -1,1881 +1,398 @@
 {
-    "swagger": "2.0",
+    "openapi": "3.0.0",
     "info": {
-        "description": "This is the API documentation for the project",
+        "title": "API Documentation",
         "version": "1.0.0",
-        "title": "Project API"
+        "description": "API documentation for the application."
     },
-    "host": "localhost:3000",
-    "basePath": "/",
-    "tags": [
-        {
-            "name": "Materias Primas",
-            "description": "API for managing materias primas"
-        },
-        { "name": "Proyectos", "description": "API for managing proyectos" },
-        { "name": "Usuarios", "description": "API for managing usuarios" },
-        {
-            "name": "Salida Productos",
-            "description": "API for managing salida de productos"
-        },
-        { "name": "Sesiones", "description": "API for managing sesiones" },
-        {
-            "name": "Productos Finales",
-            "description": "API for managing productos finales"
-        },
-        { "name": "Operarios", "description": "API for managing operarios" },
-        {
-            "name": "Ingredientes",
-            "description": "API for managing ingredientes"
-        },
-        { "name": "Envasados", "description": "API for managing envasados" },
-        {
-            "name": "Entrada Productos",
-            "description": "API for managing entrada de productos"
-        },
-        { "name": "Logs", "description": "API for managing logs" },
-        { "name": "Destinos", "description": "API for managing destinos" },
-        { "name": "Formatos", "description": "API for managing formatos" },
-        {
-            "name": "Proveedores",
-            "description": "API for managing proveedores"
-        },
-        { "name": "Formulas", "description": "API for managing formulas" },
-        { "name": "Vehiculos", "description": "API for managing vehiculos" },
-        {
-            "name": "Permisos",
-            "description": "API for managing permisos and grupos"
-        }
-    ],
     "paths": {
-        "/materias_primas": {
-            "get": {
-                "tags": ["Materias Primas"],
-                "summary": "Get all materias primas",
-                "responses": {
-                    "200": { "description": "Successful operation" }
-                }
-            },
-            "post": {
-                "tags": ["Materias Primas"],
-                "summary": "Create a new materia prima",
-                "parameters": [
-                    {
-                        "name": "body",
-                        "in": "body",
-                        "schema": { "$ref": "#/definitions/PostMateriasPrimas" }
-                    }
-                ],
-                "responses": {
-                    "200": { "description": "Successful operation" }
-                }
-            }
-        },
-        "/materias_primas/nombre/{nombre}": {
-            "get": {
-                "tags": ["Materias Primas"],
-                "summary": "Get materias primas by nombre",
-                "parameters": [
-                    {
-                        "name": "nombre",
-                        "in": "path",
-                        "required": true,
-                        "type": "string"
-                    }
-                ],
-                "responses": {
-                    "200": { "description": "Successful operation" }
-                }
-            }
-        },
-        "/materias_primas/proyecto/{id_proyecto}": {
-            "get": {
-                "tags": ["Materias Primas"],
-                "summary": "Get materias primas by proyecto",
-                "parameters": [
-                    {
-                        "name": "id_proyecto",
-                        "in": "path",
-                        "required": true,
-                        "type": "integer"
-                    }
-                ],
-                "responses": {
-                    "200": { "description": "Successful operation" }
-                }
-            }
-        },
-        "/materias_primas/{id}": {
-            "put": {
-                "tags": ["Materias Primas"],
-                "summary": "Update a materia prima",
-                "parameters": [
-                    {
-                        "name": "id",
-                        "in": "path",
-                        "required": true,
-                        "type": "integer"
-                    },
-                    {
-                        "name": "body",
-                        "in": "body",
-                        "schema": { "$ref": "#/definitions/PutMateriasPrimas" }
-                    }
-                ],
-                "responses": {
-                    "200": { "description": "Successful operation" }
-                }
-            },
-            "delete": {
-                "tags": ["Materias Primas"],
-                "summary": "Delete a materia prima",
-                "parameters": [
-                    {
-                        "name": "id",
-                        "in": "path",
-                        "required": true,
-                        "type": "integer"
-                    }
-                ],
-                "responses": {
-                    "200": { "description": "Successful operation" }
-                }
-            }
-        },
-        "/proyectos": {
-            "get": {
-                "tags": ["Proyectos"],
-                "summary": "Get all proyectos",
-                "responses": {
-                    "200": { "description": "Successful operation" }
-                }
-            },
-            "post": {
-                "tags": ["Proyectos"],
-                "summary": "Create a new proyecto",
-                "parameters": [
-                    {
-                        "name": "body",
-                        "in": "body",
-                        "schema": { "$ref": "#/definitions/PostProyectos" }
-                    }
-                ],
-                "responses": {
-                    "200": { "description": "Successful operation" }
-                }
-            }
-        },
-        "/proyectos/nombre/{nombre}": {
-            "get": {
-                "tags": ["Proyectos"],
-                "summary": "Get proyectos by nombre",
-                "parameters": [
-                    {
-                        "name": "nombre",
-                        "in": "path",
-                        "required": true,
-                        "type": "string"
-                    }
-                ],
-                "responses": {
-                    "200": { "description": "Successful operation" }
-                }
-            }
-        },
-        "/proyectos/nif/{nif}": {
-            "get": {
-                "tags": ["Proyectos"],
-                "summary": "Get proyectos by NIF",
-                "parameters": [
-                    {
-                        "name": "nif",
-                        "in": "path",
-                        "required": true,
-                        "type": "string"
-                    }
-                ],
-                "responses": {
-                    "200": { "description": "Successful operation" }
-                }
-            }
-        },
-        "/proyectos/telefono/{telefono}": {
-            "get": {
-                "tags": ["Proyectos"],
-                "summary": "Get proyectos by telefono",
-                "parameters": [
-                    {
-                        "name": "telefono",
-                        "in": "path",
-                        "required": true,
-                        "type": "string"
-                    }
-                ],
-                "responses": {
-                    "200": { "description": "Successful operation" }
-                }
-            }
-        },
-        "/proyectos/correo/{correo}": {
-            "get": {
-                "tags": ["Proyectos"],
-                "summary": "Get proyectos by correo electronico",
-                "parameters": [
-                    {
-                        "name": "correo",
-                        "in": "path",
-                        "required": true,
-                        "type": "string"
-                    }
-                ],
-                "responses": {
-                    "200": { "description": "Successful operation" }
-                }
-            }
-        },
-        "/proyectos/{id}": {
-            "put": {
-                "tags": ["Proyectos"],
-                "summary": "Update a proyecto",
-                "parameters": [
-                    {
-                        "name": "id",
-                        "in": "path",
-                        "required": true,
-                        "type": "integer"
-                    },
-                    {
-                        "name": "body",
-                        "in": "body",
-                        "schema": { "$ref": "#/definitions/PutProyectos" }
-                    }
-                ],
-                "responses": {
-                    "200": { "description": "Successful operation" }
-                }
-            },
-            "delete": {
-                "tags": ["Proyectos"],
-                "summary": "Delete a proyecto",
-                "parameters": [
-                    {
-                        "name": "id",
-                        "in": "path",
-                        "required": true,
-                        "type": "integer"
-                    }
-                ],
-                "responses": {
-                    "200": { "description": "Successful operation" }
-                }
-            }
-        },
         "/usuarios": {
             "get": {
-                "tags": ["Usuarios"],
                 "summary": "Get all usuarios",
+                "security": [{ "bearerAuth": [] }],
                 "responses": {
-                    "200": { "description": "Successful operation" }
+                    "200": { "description": "A list of usuarios." }
                 }
             },
             "post": {
-                "tags": ["Usuarios"],
                 "summary": "Create a new usuario",
-                "parameters": [
-                    {
-                        "name": "body",
-                        "in": "body",
-                        "schema": { "$ref": "#/definitions/PostUsuarios" }
-                    }
-                ],
+                "security": [{ "bearerAuth": [] }],
                 "responses": {
-                    "200": { "description": "Successful operation" }
+                    "201": { "description": "Usuario created." }
                 }
             }
         },
         "/usuarios/{id}": {
-            "put": {
-                "tags": ["Usuarios"],
-                "summary": "Update a usuario",
-                "parameters": [
-                    {
-                        "name": "id",
-                        "in": "path",
-                        "required": true,
-                        "type": "integer"
-                    },
-                    {
-                        "name": "body",
-                        "in": "body",
-                        "schema": { "$ref": "#/definitions/PutUsuarios" }
-                    }
-                ],
-                "responses": {
-                    "200": { "description": "Successful operation" }
-                }
-            },
-            "delete": {
-                "tags": ["Usuarios"],
-                "summary": "Delete a usuario",
-                "parameters": [
-                    {
-                        "name": "id",
-                        "in": "path",
-                        "required": true,
-                        "type": "integer"
-                    }
-                ],
-                "responses": {
-                    "200": { "description": "Successful operation" }
-                }
-            }
-        },
-        "/usuarios/{id}/permissions": {
             "get": {
-                "tags": ["Usuarios"],
-                "summary": "Get user with permissions",
+                "summary": "Get usuario by ID",
+                "security": [{ "bearerAuth": [] }],
                 "parameters": [
                     {
                         "name": "id",
                         "in": "path",
                         "required": true,
-                        "type": "integer"
-                    }
-                ],
-                "responses": {
-                    "200": { "description": "Successful operation" }
-                }
-            }
-        },
-        "/salidaProductos": {
-            "get": {
-                "tags": ["Salida Productos"],
-                "summary": "Get all salida de productos",
-                "responses": {
-                    "200": { "description": "Successful operation" }
-                }
-            },
-            "post": {
-                "tags": ["Salida Productos"],
-                "summary": "Create a new salida de producto",
-                "parameters": [
-                    {
-                        "name": "body",
-                        "in": "body",
                         "schema": {
-                            "$ref": "#/definitions/PostSalidaProductos"
+                            "type": "string"
                         }
                     }
                 ],
                 "responses": {
-                    "200": { "description": "Successful operation" }
+                    "200": { "description": "Usuario data." }
                 }
-            }
-        },
-        "/salidaProductos/{id}": {
+            },
             "put": {
-                "tags": ["Salida Productos"],
-                "summary": "Update a salida de producto",
+                "summary": "Update usuario by ID",
+                "security": [{ "bearerAuth": [] }],
                 "parameters": [
                     {
                         "name": "id",
                         "in": "path",
                         "required": true,
-                        "type": "integer"
-                    },
-                    {
-                        "name": "body",
-                        "in": "body",
-                        "schema": { "$ref": "#/definitions/PutSalidaProductos" }
-                    }
-                ],
-                "responses": {
-                    "200": { "description": "Successful operation" }
-                }
-            },
-            "delete": {
-                "tags": ["Salida Productos"],
-                "summary": "Delete a salida de producto",
-                "parameters": [
-                    {
-                        "name": "id",
-                        "in": "path",
-                        "required": true,
-                        "type": "integer"
-                    }
-                ],
-                "responses": {
-                    "200": { "description": "Successful operation" }
-                }
-            }
-        },
-        "/sesiones": {
-            "get": {
-                "tags": ["Sesiones"],
-                "summary": "Get all sesiones",
-                "responses": {
-                    "200": { "description": "Successful operation" }
-                }
-            },
-            "post": {
-                "tags": ["Sesiones"],
-                "summary": "Create a new sesion",
-                "parameters": [
-                    {
-                        "name": "body",
-                        "in": "body",
-                        "schema": { "$ref": "#/definitions/PostSesiones" }
-                    }
-                ],
-                "responses": {
-                    "200": { "description": "Successful operation" }
-                }
-            }
-        },
-        "/sesiones/{id}": {
-            "put": {
-                "tags": ["Sesiones"],
-                "summary": "Update a sesion",
-                "parameters": [
-                    {
-                        "name": "id",
-                        "in": "path",
-                        "required": true,
-                        "type": "integer"
-                    },
-                    {
-                        "name": "body",
-                        "in": "body",
-                        "schema": { "$ref": "#/definitions/PutSesiones" }
-                    }
-                ],
-                "responses": {
-                    "200": { "description": "Successful operation" }
-                }
-            },
-            "delete": {
-                "tags": ["Sesiones"],
-                "summary": "Delete a sesion",
-                "parameters": [
-                    {
-                        "name": "id",
-                        "in": "path",
-                        "required": true,
-                        "type": "integer"
-                    }
-                ],
-                "responses": {
-                    "200": { "description": "Successful operation" }
-                }
-            }
-        },
-        "/productos_finales": {
-            "get": {
-                "tags": ["Productos Finales"],
-                "summary": "Get all productos finales",
-                "responses": {
-                    "200": { "description": "Successful operation" }
-                }
-            },
-            "post": {
-                "tags": ["Productos Finales"],
-                "summary": "Create a new producto final",
-                "parameters": [
-                    {
-                        "name": "body",
-                        "in": "body",
                         "schema": {
-                            "$ref": "#/definitions/PostProductosFinales"
+                            "type": "string"
                         }
                     }
                 ],
                 "responses": {
-                    "200": { "description": "Successful operation" }
+                    "200": { "description": "Usuario updated." }
                 }
-            }
-        },
-        "/productos_finales/nombre/{nombre}": {
-            "get": {
-                "tags": ["Productos Finales"],
-                "summary": "Get productos finales by nombre",
-                "parameters": [
-                    {
-                        "name": "nombre",
-                        "in": "path",
-                        "required": true,
-                        "type": "string"
-                    }
-                ],
-                "responses": {
-                    "200": { "description": "Successful operation" }
-                }
-            }
-        },
-        "/productos_finales/proyecto/{id_proyecto}": {
-            "get": {
-                "tags": ["Productos Finales"],
-                "summary": "Get productos finales by proyecto",
-                "parameters": [
-                    {
-                        "name": "id_proyecto",
-                        "in": "path",
-                        "required": true,
-                        "type": "integer"
-                    }
-                ],
-                "responses": {
-                    "200": { "description": "Successful operation" }
-                }
-            }
-        },
-        "/productos_finales/{id}": {
-            "put": {
-                "tags": ["Productos Finales"],
-                "summary": "Update a producto final",
+            },
+            "delete": {
+                "summary": "Delete usuario by ID",
+                "security": [{ "bearerAuth": [] }],
                 "parameters": [
                     {
                         "name": "id",
                         "in": "path",
                         "required": true,
-                        "type": "integer"
-                    },
-                    {
-                        "name": "body",
-                        "in": "body",
                         "schema": {
-                            "$ref": "#/definitions/PutProductosFinales"
+                            "type": "string"
                         }
                     }
                 ],
                 "responses": {
-                    "200": { "description": "Successful operation" }
-                }
-            },
-            "delete": {
-                "tags": ["Productos Finales"],
-                "summary": "Delete a producto final",
-                "parameters": [
-                    {
-                        "name": "id",
-                        "in": "path",
-                        "required": true,
-                        "type": "integer"
-                    }
-                ],
-                "responses": {
-                    "200": { "description": "Successful operation" }
+                    "204": { "description": "Usuario deleted." }
                 }
             }
         },
-        "/operarios": {
+        "/usuarios/detalles/{token}": {
             "get": {
-                "tags": ["Operarios"],
-                "summary": "Get all operarios",
-                "responses": {
-                    "200": { "description": "Successful operation" }
-                }
-            },
-            "post": {
-                "tags": ["Operarios"],
-                "summary": "Create a new operario",
+                "summary": "Get usuario details by token",
+                "security": [{ "bearerAuth": [] }],
                 "parameters": [
                     {
-                        "name": "body",
-                        "in": "body",
-                        "schema": { "$ref": "#/definitions/PostOperarios" }
-                    }
-                ],
-                "responses": {
-                    "200": { "description": "Successful operation" }
-                }
-            }
-        },
-        "/operarios/nombre/{nombre}": {
-            "get": {
-                "tags": ["Operarios"],
-                "summary": "Get operarios by nombre",
-                "parameters": [
-                    {
-                        "name": "nombre",
+                        "name": "token",
                         "in": "path",
                         "required": true,
-                        "type": "string"
-                    }
-                ],
-                "responses": {
-                    "200": { "description": "Successful operation" }
-                }
-            }
-        },
-        "/operarios/proyecto/{id_proyecto}": {
-            "get": {
-                "tags": ["Operarios"],
-                "summary": "Get operarios by proyecto",
-                "parameters": [
-                    {
-                        "name": "id_proyecto",
-                        "in": "path",
-                        "required": true,
-                        "type": "integer"
-                    }
-                ],
-                "responses": {
-                    "200": { "description": "Successful operation" }
-                }
-            }
-        },
-        "/operarios/{id}": {
-            "put": {
-                "tags": ["Operarios"],
-                "summary": "Update an operario",
-                "parameters": [
-                    {
-                        "name": "id",
-                        "in": "path",
-                        "required": true,
-                        "type": "integer"
-                    },
-                    {
-                        "name": "body",
-                        "in": "body",
-                        "schema": { "$ref": "#/definitions/PutOperarios" }
-                    }
-                ],
-                "responses": {
-                    "200": { "description": "Successful operation" }
-                }
-            },
-            "delete": {
-                "tags": ["Operarios"],
-                "summary": "Delete an operario",
-                "parameters": [
-                    {
-                        "name": "id",
-                        "in": "path",
-                        "required": true,
-                        "type": "integer"
-                    }
-                ],
-                "responses": {
-                    "200": { "description": "Successful operation" }
-                }
-            }
-        },
-        "/ingredientes": {
-            "get": {
-                "tags": ["Ingredientes"],
-                "summary": "Get all ingredientes",
-                "responses": {
-                    "200": { "description": "Successful operation" }
-                }
-            },
-            "post": {
-                "tags": ["Ingredientes"],
-                "summary": "Create a new ingrediente",
-                "parameters": [
-                    {
-                        "name": "body",
-                        "in": "body",
-                        "schema": { "$ref": "#/definitions/PostIngredientes" }
-                    }
-                ],
-                "responses": {
-                    "200": { "description": "Successful operation" }
-                }
-            }
-        },
-        "/ingredientes/formula/:formula_id": {
-            "get": {
-                "tags": ["Ingredientes"],
-                "summary": "Get ingredientes by formula",
-                "parameters": [
-                    {
-                        "name": "formula_id",
-                        "in": "path",
-                        "required": true,
-                        "type": "integer"
-                    }
-                ],
-                "responses": {
-                    "200": { "description": "Successful operation" }
-                }
-            }
-        },
-        "/ingredientes/materia_prima/:materia_prima_id": {
-            "get": {
-                "tags": ["Ingredientes"],
-                "summary": "Get ingredientes by materia prima",
-                "parameters": [
-                    {
-                        "name": "materia_prima_id",
-                        "in": "path",
-                        "required": true,
-                        "type": "integer"
-                    }
-                ],
-                "responses": {
-                    "200": { "description": "Successful operation" }
-                }
-            }
-        },
-        "/ingredientes/proyecto/:id_proyecto": {
-            "get": {
-                "tags": ["Ingredientes"],
-                "summary": "Get ingredientes by proyecto",
-                "parameters": [
-                    {
-                        "name": "id_proyecto",
-                        "in": "path",
-                        "required": true,
-                        "type": "integer"
-                    }
-                ],
-                "responses": {
-                    "200": { "description": "Successful operation" }
-                }
-            }
-        },
-        "/ingredientes/:formula_id/:materia_prima_id": {
-            "delete": {
-                "tags": ["Ingredientes"],
-                "summary": "Delete an ingrediente",
-                "parameters": [
-                    {
-                        "name": "formula_id",
-                        "in": "path",
-                        "required": true,
-                        "type": "integer"
-                    },
-                    {
-                        "name": "materia_prima_id",
-                        "in": "path",
-                        "required": true,
-                        "type": "integer"
-                    }
-                ],
-                "responses": {
-                    "200": { "description": "Successful operation" }
-                }
-            }
-        },
-        "/envasados": {
-            "get": {
-                "tags": ["Envasados"],
-                "summary": "Get all envasados",
-                "responses": {
-                    "200": { "description": "Successful operation" }
-                }
-            },
-            "post": {
-                "tags": ["Envasados"],
-                "summary": "Create a new envasado",
-                "parameters": [
-                    {
-                        "name": "body",
-                        "in": "body",
-                        "schema": { "$ref": "#/definitions/PostEnvasados" }
-                    }
-                ],
-                "responses": {
-                    "200": { "description": "Successful operation" }
-                }
-            }
-        },
-        "/envasados/nombre/{nombre}": {
-            "get": {
-                "tags": ["Envasados"],
-                "summary": "Get envasados by nombre",
-                "parameters": [
-                    {
-                        "name": "nombre",
-                        "in": "path",
-                        "required": true,
-                        "type": "string"
-                    }
-                ],
-                "responses": {
-                    "200": { "description": "Successful operation" }
-                }
-            }
-        },
-        "/envasados/proyecto/{id_proyecto}": {
-            "get": {
-                "tags": ["Envasados"],
-                "summary": "Get envasados by proyecto",
-                "parameters": [
-                    {
-                        "name": "id_proyecto",
-                        "in": "path",
-                        "required": true,
-                        "type": "integer"
-                    }
-                ],
-                "responses": {
-                    "200": { "description": "Successful operation" }
-                }
-            }
-        },
-        "/envasados/{id}": {
-            "put": {
-                "tags": ["Envasados"],
-                "summary": "Update an envasado",
-                "parameters": [
-                    {
-                        "name": "id",
-                        "in": "path",
-                        "required": true,
-                        "type": "integer"
-                    },
-                    {
-                        "name": "body",
-                        "in": "body",
-                        "schema": { "$ref": "#/definitions/PutEnvasados" }
-                    }
-                ],
-                "responses": {
-                    "200": { "description": "Successful operation" }
-                }
-            },
-            "delete": {
-                "tags": ["Envasados"],
-                "summary": "Delete an envasado",
-                "parameters": [
-                    {
-                        "name": "id",
-                        "in": "path",
-                        "required": true,
-                        "type": "integer"
-                    }
-                ],
-                "responses": {
-                    "200": { "description": "Successful operation" }
-                }
-            }
-        },
-        "/entradaProductos": {
-            "get": {
-                "tags": ["Entrada Productos"],
-                "summary": "Get all entrada de productos",
-                "responses": {
-                    "200": { "description": "Successful operation" }
-                }
-            },
-            "post": {
-                "tags": ["Entrada Productos"],
-                "summary": "Create a new entrada de producto",
-                "parameters": [
-                    {
-                        "name": "body",
-                        "in": "body",
                         "schema": {
-                            "$ref": "#/definitions/PostEntradaProductos"
+                            "type": "string"
                         }
                     }
                 ],
                 "responses": {
-                    "200": { "description": "Successful operation" }
+                    "200": { "description": "Usuario details." }
                 }
             }
         },
-        "/entradaProductos/{id}": {
-            "put": {
-                "tags": ["Entrada Productos"],
-                "summary": "Update an entrada de producto",
+        "/partidas": {
+            "get": {
+                "summary": "Get all partidas",
+                "security": [{ "bearerAuth": [] }],
+                "responses": {
+                    "200": { "description": "A list of partidas." }
+                }
+            },
+            "post": {
+                "summary": "Create a new partida",
+                "security": [{ "bearerAuth": [] }],
+                "responses": {
+                    "201": { "description": "Partida created." }
+                }
+            }
+        },
+        "/partidas/{id}": {
+            "get": {
+                "summary": "Get partida by ID",
+                "security": [{ "bearerAuth": [] }],
                 "parameters": [
                     {
                         "name": "id",
                         "in": "path",
                         "required": true,
-                        "type": "integer"
-                    },
-                    {
-                        "name": "body",
-                        "in": "body",
                         "schema": {
-                            "$ref": "#/definitions/PutEntradaProductos"
+                            "type": "string"
                         }
                     }
                 ],
                 "responses": {
-                    "200": { "description": "Successful operation" }
+                    "200": { "description": "Partida data." }
                 }
             },
-            "delete": {
-                "tags": ["Entrada Productos"],
-                "summary": "Delete an entrada de producto",
-                "parameters": [
-                    {
-                        "name": "id",
-                        "in": "path",
-                        "required": true,
-                        "type": "integer"
-                    }
-                ],
-                "responses": {
-                    "200": { "description": "Successful operation" }
-                }
-            }
-        },
-        "/logs": {
-            "get": {
-                "tags": ["Logs"],
-                "summary": "Get all logs",
-                "responses": {
-                    "200": { "description": "Successful operation" }
-                }
-            },
-            "post": {
-                "tags": ["Logs"],
-                "summary": "Create a new log",
-                "parameters": [
-                    {
-                        "name": "body",
-                        "in": "body",
-                        "schema": { "$ref": "#/definitions/PostLogs" }
-                    }
-                ],
-                "responses": {
-                    "200": { "description": "Successful operation" }
-                }
-            }
-        },
-        "/logs/{id}": {
             "put": {
-                "tags": ["Logs"],
-                "summary": "Update a log",
+                "summary": "Update partida by ID",
+                "security": [{ "bearerAuth": [] }],
                 "parameters": [
                     {
                         "name": "id",
                         "in": "path",
                         "required": true,
-                        "type": "integer"
-                    },
-                    {
-                        "name": "body",
-                        "in": "body",
-                        "schema": { "$ref": "#/definitions/PutLogs" }
+                        "schema": {
+                            "type": "string"
+                        }
                     }
                 ],
                 "responses": {
-                    "200": { "description": "Successful operation" }
+                    "200": { "description": "Partida updated." }
                 }
             },
             "delete": {
-                "tags": ["Logs"],
-                "summary": "Delete a log",
+                "summary": "Delete partida by ID",
+                "security": [{ "bearerAuth": [] }],
                 "parameters": [
                     {
                         "name": "id",
                         "in": "path",
                         "required": true,
-                        "type": "integer"
+                        "schema": {
+                            "type": "string"
+                        }
                     }
                 ],
                 "responses": {
-                    "200": { "description": "Successful operation" }
+                    "204": { "description": "Partida deleted." }
                 }
             }
         },
-        "/destinos": {
+        "/participantes": {
             "get": {
-                "tags": ["Destinos"],
-                "summary": "Get all destinos",
+                "summary": "Get all participantes",
+                "security": [{ "bearerAuth": [] }],
                 "responses": {
-                    "200": { "description": "Successful operation" }
+                    "200": { "description": "A list of participantes." }
                 }
             },
             "post": {
-                "tags": ["Destinos"],
-                "summary": "Create a new destino",
-                "parameters": [
-                    {
-                        "name": "body",
-                        "in": "body",
-                        "schema": { "$ref": "#/definitions/PostDestinos" }
-                    }
-                ],
+                "summary": "Create a new participante",
+                "security": [{ "bearerAuth": [] }],
                 "responses": {
-                    "200": { "description": "Successful operation" }
+                    "201": { "description": "Participante created." }
                 }
             }
         },
-        "/destinos/{id}": {
+        "/participantes/{id}": {
+            "get": {
+                "summary": "Get participante by ID",
+                "security": [{ "bearerAuth": [] }],
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": { "description": "Participante data." }
+                }
+            },
             "put": {
-                "tags": ["Destinos"],
-                "summary": "Update a destino",
+                "summary": "Update participante by ID",
+                "security": [{ "bearerAuth": [] }],
                 "parameters": [
                     {
                         "name": "id",
                         "in": "path",
                         "required": true,
-                        "type": "integer"
-                    },
-                    {
-                        "name": "body",
-                        "in": "body",
-                        "schema": { "$ref": "#/definitions/PutDestinos" }
+                        "schema": {
+                            "type": "string"
+                        }
                     }
                 ],
                 "responses": {
-                    "200": { "description": "Successful operation" }
+                    "200": { "description": "Participante updated." }
                 }
             },
             "delete": {
-                "tags": ["Destinos"],
-                "summary": "Delete a destino",
+                "summary": "Delete participante by ID",
+                "security": [{ "bearerAuth": [] }],
                 "parameters": [
                     {
                         "name": "id",
                         "in": "path",
                         "required": true,
-                        "type": "integer"
+                        "schema": {
+                            "type": "string"
+                        }
                     }
                 ],
                 "responses": {
-                    "200": { "description": "Successful operation" }
+                    "204": { "description": "Participante deleted." }
                 }
             }
         },
-        "/formatos": {
+        "/objetivos": {
             "get": {
-                "tags": ["Formatos"],
-                "summary": "Get all formatos",
+                "summary": "Get all objetivos",
+                "security": [{ "bearerAuth": [] }],
                 "responses": {
-                    "200": { "description": "Successful operation" }
+                    "200": { "description": "A list of objetivos." }
                 }
             },
             "post": {
-                "tags": ["Formatos"],
-                "summary": "Create a new formato",
-                "parameters": [
-                    {
-                        "name": "body",
-                        "in": "body",
-                        "schema": { "$ref": "#/definitions/PostFormatos" }
-                    }
-                ],
+                "summary": "Create a new objetivo",
+                "security": [{ "bearerAuth": [] }],
                 "responses": {
-                    "200": { "description": "Successful operation" }
+                    "201": { "description": "Objetivo created." }
                 }
             }
         },
-        "/formatos/{id}": {
+        "/objetivos/{id}": {
+            "get": {
+                "summary": "Get objetivo by ID",
+                "security": [{ "bearerAuth": [] }],
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": { "description": "Objetivo data." }
+                }
+            },
             "put": {
-                "tags": ["Formatos"],
-                "summary": "Update a formato",
+                "summary": "Update objetivo by ID",
+                "security": [{ "bearerAuth": [] }],
                 "parameters": [
                     {
                         "name": "id",
                         "in": "path",
                         "required": true,
-                        "type": "integer"
-                    },
-                    {
-                        "name": "body",
-                        "in": "body",
-                        "schema": { "$ref": "#/definitions/PutFormatos" }
+                        "schema": {
+                            "type": "string"
+                        }
                     }
                 ],
                 "responses": {
-                    "200": { "description": "Successful operation" }
+                    "200": { "description": "Objetivo updated." }
                 }
             },
             "delete": {
-                "tags": ["Formatos"],
-                "summary": "Delete a formato",
+                "summary": "Delete objetivo by ID",
+                "security": [{ "bearerAuth": [] }],
                 "parameters": [
                     {
                         "name": "id",
                         "in": "path",
                         "required": true,
-                        "type": "integer"
+                        "schema": {
+                            "type": "string"
+                        }
                     }
                 ],
                 "responses": {
-                    "200": { "description": "Successful operation" }
+                    "204": { "description": "Objetivo deleted." }
                 }
             }
         },
-        "/proveedores": {
+        "/historial-equipos": {
             "get": {
-                "tags": ["Proveedores"],
-                "summary": "Get all proveedores",
+                "summary": "Get all historial equipos",
+                "security": [{ "bearerAuth": [] }],
                 "responses": {
-                    "200": { "description": "Successful operation" }
+                    "200": { "description": "A list of historial equipos." }
                 }
             },
             "post": {
-                "tags": ["Proveedores"],
-                "summary": "Create a new proveedor",
-                "parameters": [
-                    {
-                        "name": "body",
-                        "in": "body",
-                        "schema": { "$ref": "#/definitions/PostProveedores" }
-                    }
-                ],
+                "summary": "Create a new historial equipo",
+                "security": [{ "bearerAuth": [] }],
                 "responses": {
-                    "200": { "description": "Successful operation" }
+                    "201": { "description": "Historial equipo created." }
                 }
             }
         },
-        "/proveedores/nombre/{nombre}": {
+        "/historial-equipos/{id}": {
             "get": {
-                "tags": ["Proveedores"],
-                "summary": "Get proveedores by nombre",
+                "summary": "Get historial equipo by ID",
+                "security": [{ "bearerAuth": [] }],
                 "parameters": [
                     {
-                        "name": "nombre",
+                        "name": "id",
                         "in": "path",
                         "required": true,
-                        "type": "string"
+                        "schema": {
+                            "type": "string"
+                        }
                     }
                 ],
                 "responses": {
-                    "200": { "description": "Successful operation" }
+                    "200": { "description": "Historial equipo data." }
                 }
-            }
-        },
-        "/proveedores/proyecto/{id_proyecto}": {
-            "get": {
-                "tags": ["Proveedores"],
-                "summary": "Get proveedores by proyecto",
-                "parameters": [
-                    {
-                        "name": "id_proyecto",
-                        "in": "path",
-                        "required": true,
-                        "type": "integer"
-                    }
-                ],
-                "responses": {
-                    "200": { "description": "Successful operation" }
-                }
-            }
-        },
-        "/proveedores/{id}": {
+            },
             "put": {
-                "tags": ["Proveedores"],
-                "summary": "Update a proveedor",
+                "summary": "Update historial equipo by ID",
+                "security": [{ "bearerAuth": [] }],
                 "parameters": [
                     {
                         "name": "id",
                         "in": "path",
                         "required": true,
-                        "type": "integer"
-                    },
-                    {
-                        "name": "body",
-                        "in": "body",
-                        "schema": { "$ref": "#/definitions/PutProveedores" }
+                        "schema": {
+                            "type": "string"
+                        }
                     }
                 ],
                 "responses": {
-                    "200": { "description": "Successful operation" }
+                    "200": { "description": "Historial equipo updated." }
                 }
             },
             "delete": {
-                "tags": ["Proveedores"],
-                "summary": "Delete a proveedor",
+                "summary": "Delete historial equipo by ID",
+                "security": [{ "bearerAuth": [] }],
                 "parameters": [
                     {
                         "name": "id",
                         "in": "path",
                         "required": true,
-                        "type": "integer"
+                        "schema": {
+                            "type": "string"
+                        }
                     }
                 ],
                 "responses": {
-                    "200": { "description": "Successful operation" }
+                    "204": { "description": "Historial equipo deleted." }
                 }
             }
         },
-        "/formulas": {
+        "/registro": {
             "get": {
-                "tags": ["Formulas"],
-                "summary": "Get all formulas",
+                "summary": "Send callback",
                 "responses": {
-                    "200": { "description": "Successful operation" }
-                }
-            },
-            "post": {
-                "tags": ["Formulas"],
-                "summary": "Create a new formula",
-                "parameters": [
-                    {
-                        "name": "body",
-                        "in": "body",
-                        "schema": { "$ref": "#/definitions/PostFormulas" }
-                    }
-                ],
-                "responses": {
-                    "200": { "description": "Successful operation" }
+                    "200": { "description": "Callback sent." }
                 }
             }
         },
-        "/formulas/nombre/{nombre}": {
+        "/callback": {
             "get": {
-                "tags": ["Formulas"],
-                "summary": "Get formulas by nombre",
-                "parameters": [
-                    {
-                        "name": "nombre",
-                        "in": "path",
-                        "required": true,
-                        "type": "string"
-                    }
-                ],
+                "summary": "Handle callback",
                 "responses": {
-                    "200": { "description": "Successful operation" }
-                }
-            }
-        },
-        "/formulas/proyecto/{id_proyecto}": {
-            "get": {
-                "tags": ["Formulas"],
-                "summary": "Get formulas by proyecto",
-                "parameters": [
-                    {
-                        "name": "id_proyecto",
-                        "in": "path",
-                        "required": true,
-                        "type": "integer"
-                    }
-                ],
-                "responses": {
-                    "200": { "description": "Successful operation" }
-                }
-            }
-        },
-        "/formulas/{id}": {
-            "put": {
-                "tags": ["Formulas"],
-                "summary": "Update a formula",
-                "parameters": [
-                    {
-                        "name": "id",
-                        "in": "path",
-                        "required": true,
-                        "type": "integer"
-                    },
-                    {
-                        "name": "body",
-                        "in": "body",
-                        "schema": { "$ref": "#/definitions/PutFormulas" }
-                    }
-                ],
-                "responses": {
-                    "200": { "description": "Successful operation" }
-                }
-            },
-            "delete": {
-                "tags": ["Formulas"],
-                "summary": "Delete a formula",
-                "parameters": [
-                    {
-                        "name": "id",
-                        "in": "path",
-                        "required": true,
-                        "type": "integer"
-                    }
-                ],
-                "responses": {
-                    "200": { "description": "Successful operation" }
-                }
-            }
-        },
-        "/vehiculos": {
-            "get": {
-                "tags": ["Vehiculos"],
-                "summary": "Get all vehiculos",
-                "responses": {
-                    "200": { "description": "Successful operation" }
-                }
-            },
-            "post": {
-                "tags": ["Vehiculos"],
-                "summary": "Create a new vehiculo",
-                "parameters": [
-                    {
-                        "name": "body",
-                        "in": "body",
-                        "schema": { "$ref": "#/definitions/PostVehiculos" }
-                    }
-                ],
-                "responses": {
-                    "200": { "description": "Successful operation" }
-                }
-            }
-        },
-        "/vehiculos/matricula/{matricula}": {
-            "get": {
-                "tags": ["Vehiculos"],
-                "summary": "Get vehiculos by matricula",
-                "parameters": [
-                    {
-                        "name": "matricula",
-                        "in": "path",
-                        "required": true,
-                        "type": "string"
-                    }
-                ],
-                "responses": {
-                    "200": { "description": "Successful operation" }
-                }
-            }
-        },
-        "/vehiculos/proyecto/{id_proyecto}": {
-            "get": {
-                "tags": ["Vehiculos"],
-                "summary": "Get vehiculos by proyecto",
-                "parameters": [
-                    {
-                        "name": "id_proyecto",
-                        "in": "path",
-                        "required": true,
-                        "type": "integer"
-                    }
-                ],
-                "responses": {
-                    "200": { "description": "Successful operation" }
-                }
-            }
-        },
-        "/vehiculos/{id}": {
-            "put": {
-                "tags": ["Vehiculos"],
-                "summary": "Update a vehiculo",
-                "parameters": [
-                    {
-                        "name": "id",
-                        "in": "path",
-                        "required": true,
-                        "type": "integer"
-                    },
-                    {
-                        "name": "body",
-                        "in": "body",
-                        "schema": { "$ref": "#/definitions/PutVehiculos" }
-                    }
-                ],
-                "responses": {
-                    "200": { "description": "Successful operation" }
-                }
-            },
-            "delete": {
-                "tags": ["Vehiculos"],
-                "summary": "Delete a vehiculo",
-                "parameters": [
-                    {
-                        "name": "id",
-                        "in": "path",
-                        "required": true,
-                        "type": "integer"
-                    }
-                ],
-                "responses": {
-                    "200": { "description": "Successful operation" }
-                }
-            }
-        },
-        "/permisos": {
-            "get": {
-                "tags": ["Permisos"],
-                "summary": "Get all permisos",
-                "responses": {
-                    "200": { "description": "Successful operation" }
-                }
-            },
-            "post": {
-                "tags": ["Permisos"],
-                "summary": "Create a new permiso",
-                "parameters": [
-                    {
-                        "name": "body",
-                        "in": "body",
-                        "schema": { "$ref": "#/definitions/PostPermisos" }
-                    }
-                ],
-                "responses": {
-                    "200": { "description": "Successful operation" }
-                }
-            }
-        },
-        "/permisos/{id}": {
-            "put": {
-                "tags": ["Permisos"],
-                "summary": "Update a permiso",
-                "parameters": [
-                    {
-                        "name": "id",
-                        "in": "path",
-                        "required": true,
-                        "type": "integer"
-                    },
-                    {
-                        "name": "body",
-                        "in": "body",
-                        "schema": { "$ref": "#/definitions/PutPermisos" }
-                    }
-                ],
-                "responses": {
-                    "200": { "description": "Successful operation" }
-                }
-            },
-            "delete": {
-                "tags": ["Permisos"],
-                "summary": "Delete a permiso",
-                "parameters": [
-                    {
-                        "name": "id",
-                        "in": "path",
-                        "required": true,
-                        "type": "integer"
-                    }
-                ],
-                "responses": {
-                    "200": { "description": "Successful operation" }
-                }
-            }
-        },
-        "/grupos": {
-            "get": {
-                "tags": ["Permisos"],
-                "summary": "Get all grupos",
-                "responses": {
-                    "200": { "description": "Successful operation" }
-                }
-            },
-            "post": {
-                "tags": ["Permisos"],
-                "summary": "Create a new grupo",
-                "parameters": [
-                    {
-                        "name": "body",
-                        "in": "body",
-                        "schema": { "$ref": "#/definitions/PostGrupos" }
-                    }
-                ],
-                "responses": {
-                    "200": { "description": "Successful operation" }
-                }
-            }
-        },
-        "/grupos/{id}": {
-            "put": {
-                "tags": ["Permisos"],
-                "summary": "Update a grupo",
-                "parameters": [
-                    {
-                        "name": "id",
-                        "in": "path",
-                        "required": true,
-                        "type": "integer"
-                    },
-                    {
-                        "name": "body",
-                        "in": "body",
-                        "schema": { "$ref": "#/definitions/PutGrupos" }
-                    }
-                ],
-                "responses": {
-                    "200": { "description": "Successful operation" }
-                }
-            },
-            "delete": {
-                "tags": ["Permisos"],
-                "summary": "Delete a grupo",
-                "parameters": [
-                    {
-                        "name": "id",
-                        "in": "path",
-                        "required": true,
-                        "type": "integer"
-                    }
-                ],
-                "responses": {
-                    "200": { "description": "Successful operation" }
-                }
-            }
-        },
-        "/grupos/{id}/permisos": {
-            "get": {
-                "tags": ["Permisos"],
-                "summary": "Get all permisos for a grupo",
-                "parameters": [
-                    {
-                        "name": "id",
-                        "in": "path",
-                        "required": true,
-                        "type": "integer"
-                    }
-                ],
-                "responses": {
-                    "200": { "description": "Successful operation" }
-                }
-            }
-        },
-        "/grupos/{grupo_id}/permisos/{permiso_id}": {
-            "post": {
-                "tags": ["Permisos"],
-                "summary": "Assign a permiso to a grupo",
-                "parameters": [
-                    {
-                        "name": "grupo_id",
-                        "in": "path",
-                        "required": true,
-                        "type": "integer"
-                    },
-                    {
-                        "name": "permiso_id",
-                        "in": "path",
-                        "required": true,
-                        "type": "integer"
-                    }
-                ],
-                "responses": {
-                    "200": { "description": "Successful operation" }
-                }
-            },
-            "delete": {
-                "tags": ["Permisos"],
-                "summary": "Remove a permiso from a grupo",
-                "parameters": [
-                    {
-                        "name": "grupo_id",
-                        "in": "path",
-                        "required": true,
-                        "type": "integer"
-                    },
-                    {
-                        "name": "permiso_id",
-                        "in": "path",
-                        "required": true,
-                        "type": "integer"
-                    }
-                ],
-                "responses": {
-                    "200": { "description": "Successful operation" }
+                    "200": { "description": "Callback handled." }
                 }
             }
         }
     },
-    "definitions": {
-        "PostMateriasPrimas": {
-            "type": "object",
-            "properties": {
-                "nombre": { "type": "string" },
-                "caducidad": { "type": "integer" },
-                "stock_kgs": { "type": "number" },
-                "id_proyecto": { "type": "integer" }
-            }
-        },
-        "PutMateriasPrimas": {
-            "type": "object",
-            "properties": {
-                "nombre": { "type": "string" },
-                "caducidad": { "type": "integer" },
-                "stock_kgs": { "type": "number" },
-                "id_proyecto": { "type": "integer" }
-            }
-        },
-        "PostProyectos": {
-            "type": "object",
-            "properties": {
-                "nombre": { "type": "string" },
-                "nif": { "type": "string" },
-                "direccion": { "type": "string" },
-                "codigo_postal": { "type": "string" },
-                "poblacion": { "type": "string" },
-                "telefono": { "type": "string" },
-                "correo_electronico": { "type": "string" },
-                "logo": { "type": "string" }
-            }
-        },
-        "PutProyectos": {
-            "type": "object",
-            "properties": {
-                "nombre": { "type": "string" },
-                "nif": { "type": "string" },
-                "direccion": { "type": "string" },
-                "codigo_postal": { "type": "string" },
-                "poblacion": { "type": "string" },
-                "telefono": { "type": "string" },
-                "correo_electronico": { "type": "string" },
-                "logo": { "type": "string" }
-            }
-        },
-        "PostUsuarios": {
-            "type": "object",
-            "properties": {
-                "nombre": { "type": "string" },
-                "apellido": { "type": "string" },
-                "email": { "type": "string" },
-                "password": { "type": "string" },
-                "id_proyecto": { "type": "integer" }
-            }
-        },
-        "PutUsuarios": {
-            "type": "object",
-            "properties": {
-                "nombre": { "type": "string" },
-                "apellido": { "type": "string" },
-                "email": { "type": "string" },
-                "password": { "type": "string" },
-                "id_proyecto": { "type": "integer" }
-            }
-        },
-        "PostSalidaProductos": {
-            "type": "object",
-            "properties": {
-                "producto_final_id": { "type": "integer" },
-                "formula_id": { "type": "integer" },
-                "numero_lote": { "type": "string" },
-                "fecha_salida": { "type": "integer" },
-                "cantidad": { "type": "number" },
-                "fecha_caducidad": { "type": "integer" },
-                "envasado_id": { "type": "integer" },
-                "formato_id": { "type": "integer" },
-                "destino_id": { "type": "integer" },
-                "vehiculo_id": { "type": "integer" },
-                "id_proyecto": { "type": "integer" }
-            }
-        },
-        "PutSalidaProductos": {
-            "type": "object",
-            "properties": {
-                "producto_final_id": { "type": "integer" },
-                "formula_id": { "type": "integer" },
-                "numero_lote": { "type": "string" },
-                "fecha_salida": { "type": "integer" },
-                "cantidad": { "type": "number" },
-                "fecha_caducidad": { "type": "integer" },
-                "envasado_id": { "type": "integer" },
-                "formato_id": { "type": "integer" },
-                "destino_id": { "type": "integer" },
-                "vehiculo_id": { "type": "integer" },
-                "id_proyecto": { "type": "integer" }
-            }
-        },
-        "PostSesiones": {
-            "type": "object",
-            "properties": {
-                "nombre": { "type": "string" },
-                "id_proyecto": { "type": "integer" }
-            }
-        },
-        "PutSesiones": {
-            "type": "object",
-            "properties": {
-                "nombre": { "type": "string" },
-                "id_proyecto": { "type": "integer" }
-            }
-        },
-        "PostProductosFinales": {
-            "type": "object",
-            "properties": {
-                "nombre": { "type": "string" },
-                "formula_id": { "type": "integer" },
-                "caducidad": { "type": "integer" },
-                "id_proyecto": { "type": "integer" }
-            }
-        },
-        "PutProductosFinales": {
-            "type": "object",
-            "properties": {
-                "nombre": { "type": "string" },
-                "formula_id": { "type": "integer" },
-                "caducidad": { "type": "integer" },
-                "id_proyecto": { "type": "integer" }
-            }
-        },
-        "PostOperarios": {
-            "type": "object",
-            "properties": {
-                "nombre": { "type": "string" },
-                "id_proyecto": { "type": "integer" }
-            }
-        },
-        "PutOperarios": {
-            "type": "object",
-            "properties": {
-                "nombre": { "type": "string" },
-                "id_proyecto": { "type": "integer" }
-            }
-        },
-        "PostIngredientes": {
-            "type": "object",
-            "properties": {
-                "formula_id": { "type": "integer" },
-                "materia_prima_id": { "type": "integer" },
-                "cantidad_kgs": { "type": "number" },
-                "id_proyecto": { "type": "integer" }
-            }
-        },
-        "PostEnvasados": {
-            "type": "object",
-            "properties": {
-                "nombre": { "type": "string" },
-                "id_proyecto": { "type": "integer" }
-            }
-        },
-        "PutEnvasados": {
-            "type": "object",
-            "properties": {
-                "nombre": { "type": "string" },
-                "id_proyecto": { "type": "integer" }
-            }
-        },
-        "PostEntradaProductos": {
-            "type": "object",
-            "properties": {
-                "producto_final_id": { "type": "integer" },
-                "fecha_entrada": { "type": "integer" },
-                "proveedor": { "type": "string" },
-                "numero_albaran": { "type": "string" },
-                "numero_lote": { "type": "string" },
-                "cantidad_kg": { "type": "number" },
-                "fecha_caducidad": { "type": "integer" },
-                "envasado_id": { "type": "integer" },
-                "operario_id": { "type": "integer" },
-                "id_proyecto": { "type": "integer" }
-            }
-        },
-        "PutEntradaProductos": {
-            "type": "object",
-            "properties": {
-                "producto_final_id": { "type": "integer" },
-                "fecha_entrada": { "type": "integer" },
-                "proveedor": { "type": "string" },
-                "numero_albaran": { "type": "string" },
-                "numero_lote": { "type": "string" },
-                "cantidad_kg": { "type": "number" },
-                "fecha_caducidad": { "type": "integer" },
-                "envasado_id": { "type": "integer" },
-                "operario_id": { "type": "integer" },
-                "id_proyecto": { "type": "integer" }
-            }
-        },
-        "PostLogs": {
-            "type": "object",
-            "properties": {
-                "fecha": { "type": "integer" },
-                "tipo": { "type": "string" },
-                "mensaje": { "type": "string" },
-                "version": { "type": "string" },
-                "usuario": { "type": "integer" }
-            }
-        },
-        "PutLogs": {
-            "type": "object",
-            "properties": {
-                "fecha": { "type": "integer" },
-                "tipo": { "type": "string" },
-                "mensaje": { "type": "string" },
-                "version": { "type": "string" },
-                "usuario": { "type": "integer" }
-            }
-        },
-        "PostDestinos": {
-            "type": "object",
-            "properties": {
-                "nombre": { "type": "string" },
-                "id_proyecto": { "type": "integer" }
-            }
-        },
-        "PutDestinos": {
-            "type": "object",
-            "properties": {
-                "nombre": { "type": "string" },
-                "id_proyecto": { "type": "integer" }
-            }
-        },
-        "PostFormatos": {
-            "type": "object",
-            "properties": {
-                "nombre": { "type": "string" },
-                "id_proyecto": { "type": "integer" }
-            }
-        },
-        "PutFormatos": {
-            "type": "object",
-            "properties": {
-                "nombre": { "type": "string" },
-                "id_proyecto": { "type": "integer" }
-            }
-        },
-        "PostProveedores": {
-            "type": "object",
-            "properties": {
-                "nombre": { "type": "string" },
-                "id_proyecto": { "type": "integer" }
-            }
-        },
-        "PutProveedores": {
-            "type": "object",
-            "properties": {
-                "nombre": { "type": "string" },
-                "id_proyecto": { "type": "integer" }
-            }
-        },
-        "PostFormulas": {
-            "type": "object",
-            "properties": {
-                "nombre": { "type": "string" },
-                "caducidad": { "type": "integer" },
-                "id_proyecto": { "type": "integer" }
-            }
-        },
-        "PutFormulas": {
-            "type": "object",
-            "properties": {
-                "nombre": { "type": "string" },
-                "caducidad": { "type": "integer" },
-                "id_proyecto": { "type": "integer" }
-            }
-        },
-        "PostVehiculos": {
-            "type": "object",
-            "properties": {
-                "matricula": { "type": "string" },
-                "id_proyecto": { "type": "integer" }
-            }
-        },
-        "PutVehiculos": {
-            "type": "object",
-            "properties": {
-                "matricula": { "type": "string" },
-                "id_proyecto": { "type": "integer" }
-            }
-        },
-        "PostPermisos": {
-            "type": "object",
-            "properties": {
-                "nombre": { "type": "string" },
-                "descripcion": { "type": "string" },
-                "id_proyecto": { "type": "integer" }
-            }
-        },
-        "PutPermisos": {
-            "type": "object",
-            "properties": {
-                "nombre": { "type": "string" },
-                "descripcion": { "type": "string" },
-                "id_proyecto": { "type": "integer" }
-            }
-        },
-        "PostGrupos": {
-            "type": "object",
-            "properties": {
-                "nombre": { "type": "string" },
-                "id_proyecto": { "type": "integer" }
-            }
-        },
-        "PutGrupos": {
-            "type": "object",
-            "properties": {
-                "nombre": { "type": "string" },
-                "id_proyecto": { "type": "integer" }
+    "components": {
+        "securitySchemes": {
+            "bearerAuth": {
+                "type": "http",
+                "scheme": "bearer",
+                "bearerFormat": "JWT"
             }
         }
     }

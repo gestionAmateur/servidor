@@ -1,9 +1,4 @@
-import {
-    Entity,
-    PrimaryGeneratedColumn,
-    Column,
-    ManyToOne,
-} from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, ManyToOne } from 'typeorm';
 import { Usuario } from '@/entities/UsuarioEntity';
 
 @Entity('sesiones')
@@ -20,6 +15,8 @@ export class Sesion {
     @Column({ type: 'int', unsigned: true })
     expiredAt!: number;
 
-    @ManyToOne(() => Usuario, (usuario) => usuario.sesiones, { nullable: false })
+    @ManyToOne(() => Usuario, (usuario) => usuario.sesiones, {
+        nullable: false,
+    })
     usuario!: Usuario;
 }

@@ -7,8 +7,11 @@ import { HistorialEquipoController } from '@/controllers/HistorialEquipoControll
 
 import { AuthController } from '@/controllers/misc/AuthController';
 import { authMiddleware } from '@/middlewares/auth';
+import { HealthController } from '@/controllers/misc/HealthController';
 
 const router = express.Router();
+
+router.get('/health', HealthController.checkHealth);
 
 router.post('/usuarios', authMiddleware, UsuarioController.createUsuario);
 router.get('/usuarios/:id', authMiddleware, UsuarioController.getUsuarioById);
@@ -16,7 +19,10 @@ router.put('/usuarios/:id', authMiddleware, UsuarioController.updateUsuario);
 router.delete('/usuarios/:id', authMiddleware, UsuarioController.deleteUsuario);
 router.get('/usuarios', authMiddleware, UsuarioController.getAllUsuarios);
 
-router.get('/usuarios/detalles/:token', authMiddleware, UsuarioController.getUsuarioDetailsByToken);
+router.get(
+    '/usuarios/detalles/:token',
+    UsuarioController.getUsuarioDetailsByToken,
+);
 
 router.post('/partidas', authMiddleware, PartidaController.createPartida);
 router.get('/partidas/:id', authMiddleware, PartidaController.getPartidaById);

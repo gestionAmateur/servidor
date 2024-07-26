@@ -27,6 +27,9 @@ export class Usuario {
     @Column({ type: 'varchar', length: 128, nullable: true })
     email?: string;
 
+    @Column({ type: 'int', nullable: false, default: 0 })
+    rol?: string;
+
     @ManyToOne(() => EquipoCompetitivo, (equipo) => equipo.usuarios, {
         nullable: true,
     })
