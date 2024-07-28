@@ -4,6 +4,7 @@ import { PartidaController } from '@/controllers/PartidaController';
 import { ParticipanteController } from '@/controllers/ParticipanteController';
 import { ObjetivoController } from '@/controllers/ObjetivoController';
 import { HistorialEquipoController } from '@/controllers/HistorialEquipoController';
+import { CuentaInvocadorController } from '@/controllers/CuentaInvocadorController';
 
 import { AuthController } from '@/controllers/misc/AuthController';
 import { authMiddleware } from '@/middlewares/auth';
@@ -94,6 +95,32 @@ router.get(
     '/historial-equipos',
     authMiddleware,
     HistorialEquipoController.getAllHistorialEquipos,
+);
+
+router.post(
+    '/cuentas-invocador',
+    authMiddleware,
+    CuentaInvocadorController.createCuentaInvocador,
+);
+router.get(
+    '/cuentas-invocador/:id',
+    authMiddleware,
+    CuentaInvocadorController.getCuentaInvocadorById,
+);
+router.put(
+    '/cuentas-invocador/:id',
+    authMiddleware,
+    CuentaInvocadorController.updateCuentaInvocador,
+);
+router.delete(
+    '/cuentas-invocador/:id',
+    authMiddleware,
+    CuentaInvocadorController.deleteCuentaInvocador,
+);
+router.get(
+    '/cuentas-invocador',
+    authMiddleware,
+    CuentaInvocadorController.getAllCuentaInvocadores,
 );
 
 router.get('/registro', AuthController.sendCallback);

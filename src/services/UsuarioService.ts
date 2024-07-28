@@ -48,10 +48,12 @@ export class UsuarioService {
         const equipos = equiposHistorial.map((historial) => historial.equipo);
 
         return {
-            usuario,
-            cuentasInvocador: usuario.cuentasInvocador,
-            equipoActual: usuario.equipoActual,
-            equiposHistorial: equipos,
+            usuario: {
+                ...usuario,
+                cuentasInvocador: usuario.cuentasInvocador,
+                equipoActual: usuario.equipoActual,
+                equiposHistorial: equipos,
+            },
         };
     }
 

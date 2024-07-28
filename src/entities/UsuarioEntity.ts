@@ -28,7 +28,15 @@ export class Usuario {
     email?: string;
 
     @Column({ type: 'int', nullable: false, default: 0 })
-    rol?: string;
+    rol?: number;
+
+    @Column({ type: 'json', nullable: true })
+    redesSociales?: {
+        twitter?: string;
+        twitch?: string;
+        instagram?: string;
+        discord?: string;
+    };
 
     @ManyToOne(() => EquipoCompetitivo, (equipo) => equipo.usuarios, {
         nullable: true,

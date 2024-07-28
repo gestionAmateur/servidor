@@ -13,17 +13,20 @@ export class CuentaInvocador {
     @PrimaryGeneratedColumn()
     id!: number;
 
-    @Column({ type: 'varchar', length: 128 })
-    cuentaId!: string;
-
-    @Column({ type: 'varchar', length: 128 })
+    @Column({ type: 'varchar', length: 32 })
     nombreInvocador!: string;
 
-    @Column({ type: 'tinyint', unsigned: true, nullable: true })
-    nivelInvocador?: number;
+    @Column({ type: 'varchar', length: 5 })
+    tagInvocador!: string;
 
-    @Column({ type: 'varchar', length: 64 })
+    @Column({ type: 'varchar', length: 12 })
+    posicionInvocador!: string;
+
+    @Column({ type: 'varchar', length: 128 })
     puuid!: string;
+
+    @Column({ type: 'varchar', length: 128 })
+    cuentaId!: string;
 
     @ManyToOne(() => Usuario, (usuario) => usuario.cuentasInvocador)
     usuario!: Usuario;
