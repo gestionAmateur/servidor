@@ -22,10 +22,10 @@ export class CuentaInvocador {
     @Column({ type: 'varchar', length: 12 })
     posicionInvocador!: string;
 
-    @Column({ type: 'varchar', length: 128 })
+    @Column({ type: 'varchar', nullable: true, length: 128, })
     puuid!: string;
 
-    @Column({ type: 'varchar', length: 128 })
+    @Column({ type: 'varchar', nullable: true, length: 128 })
     cuentaId!: string;
 
     @ManyToOne(() => Usuario, (usuario) => usuario.cuentasInvocador)
