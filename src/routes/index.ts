@@ -129,29 +129,20 @@ router.put(
     CuentaInvocadorController.updateNombreYTagInvocador,
 );
 
-router.post(
-    '/historial-rangos',
-    authMiddleware,
-    HistorialRangosController.createHistorialRangos,
+router.put(
+    '/historial-rangos/:id',
+    HistorialRangosController.createOrUpdateHistorialRangos,
 );
 router.get(
     '/historial-rangos/:id',
-    authMiddleware,
     HistorialRangosController.getHistorialRangosById,
-);
-router.put(
-    '/historial-rangos/:id',
-    authMiddleware,
-    HistorialRangosController.updateHistorialRangos,
 );
 router.delete(
     '/historial-rangos/:id',
-    authMiddleware,
     HistorialRangosController.deleteHistorialRangos,
 );
 router.get(
     '/historial-rangos',
-    authMiddleware,
     HistorialRangosController.getAllHistorialRangos,
 );
 

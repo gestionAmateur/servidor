@@ -35,12 +35,6 @@ export class CuentaInvocadorService {
         // Llamar al nuevo endpoint para obtener el id
         const riotId = await this.getRiotIdByPuuid(puuid);
 
-        // Obtener el historial de rangos del invocador usando el id, filtrando por RANKED_SOLO_5x5
-        const historialRangos = await this.getHistorialRangosById(
-            riotId,
-            'RANKED_SOLO_5x5',
-        );
-
         data.puuid = puuid;
         data.cuentaId = riotId;
 
@@ -48,18 +42,6 @@ export class CuentaInvocadorService {
         const cuentaInvocador = this.cuentaInvocadorRepository.create(data);
         const savedCuentaInvocador = await this.cuentaInvocadorRepository.save(
             cuentaInvocador,
-        );
-
-        // Guardar el historial de rangos en la base de datos
-        await Promise.all(
-            historialRangos.map(async (rango) => {
-                const historial = this.historialRangosRepository.create({
-                    ...rango,
-                    cuentaInvocador: savedCuentaInvocador,
-                    fechaRegistro: Date.now(), // Fecha actual en formato EPOCH
-                });
-                await this.historialRangosRepository.save(historial);
-            }),
         );
 
         return savedCuentaInvocador;
@@ -197,43 +179,6 @@ export class CuentaInvocadorService {
             return id;
         } catch (error) {
             throw new BadRequestError('Error al obtener el id de Riot.');
-        }
-    }
-
-    private async getHistorialRangosById(
-        summonerId: string,
-        filterLeagueId?: string,
-    ): Promise<Partial<HistorialRangos>[]> {
-        const riotApiKey = process.env.RIOT_API_KEY;
-        const apiUrl = `https://euw1.api.riotgames.com/lol/league/v4/entries/by-summoner/${summonerId}?api_key=${riotApiKey}`;
-
-        try {
-            const response = await axios.get(apiUrl);
-            const { data } = response;
-
-            // Filtra los resultados si se proporciona un filterLeagueId
-            const filteredData = filterLeagueId
-                ? data.filter((rango: any) => rango.leagueId === filterLeagueId)
-                : data;
-
-            return filteredData.map((rango: any) => ({
-                leagueId: rango.leagueId,
-                queueType: rango.queueType,
-                tier: rango.tier,
-                rank: rango.rank,
-                summonerId: rango.summonerId,
-                leaguePoints: rango.leaguePoints,
-                wins: rango.wins,
-                losses: rango.losses,
-                veteran: rango.veteran,
-                inactive: rango.inactive,
-                freshBlood: rango.freshBlood,
-                hotStreak: rango.hotStreak,
-            }));
-        } catch (error) {
-            throw new BadRequestError(
-                'Error al obtener el historial de rangos del invocador.',
-            );
         }
     }
 }
