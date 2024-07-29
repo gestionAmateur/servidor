@@ -7,6 +7,7 @@ import {
 } from 'typeorm';
 import { Usuario } from '@/entities/UsuarioEntity';
 import { Participante } from '@/entities/ParticipanteEntity';
+import { HistorialRangos } from '@/entities/HistorialRangosEntity';
 
 @Entity('cuentas_invocador')
 export class CuentaInvocador {
@@ -22,7 +23,7 @@ export class CuentaInvocador {
     @Column({ type: 'varchar', length: 8 })
     posicionInvocador!: string;
 
-    @Column({ type: 'varchar', nullable: true, length: 128, })
+    @Column({ type: 'varchar', nullable: true, length: 128 })
     puuid!: string;
 
     @Column({ type: 'varchar', nullable: true, length: 128 })
@@ -33,4 +34,11 @@ export class CuentaInvocador {
 
     @OneToMany(() => Participante, (participante) => participante.cuenta)
     participantes!: Participante[];
+
+    @OneToMany(
+        () => HistorialRangos,
+        (historialRangos) => historialRangos.cuentaInvocador,
+        { onDelete: 'CASCADE' },
+    )
+    historialRangos!: HistorialRangos[];
 }

@@ -9,6 +9,7 @@ import { CuentaInvocadorController } from '@/controllers/CuentaInvocadorControll
 import { AuthController } from '@/controllers/misc/AuthController';
 import { authMiddleware } from '@/middlewares/auth';
 import { HealthController } from '@/controllers/misc/HealthController';
+import { HistorialRangosController } from '@/controllers/HistorialRangosController';
 
 const router = express.Router();
 
@@ -122,7 +123,37 @@ router.get(
     authMiddleware,
     CuentaInvocadorController.getAllCuentaInvocadores,
 );
-router.put('/cuentas-invocador/update/:puuid', authMiddleware, CuentaInvocadorController.updateNombreYTagInvocador);
+router.put(
+    '/cuentas-invocador/update/:puuid',
+    authMiddleware,
+    CuentaInvocadorController.updateNombreYTagInvocador,
+);
+
+router.post(
+    '/historial-rangos',
+    authMiddleware,
+    HistorialRangosController.createHistorialRangos,
+);
+router.get(
+    '/historial-rangos/:id',
+    authMiddleware,
+    HistorialRangosController.getHistorialRangosById,
+);
+router.put(
+    '/historial-rangos/:id',
+    authMiddleware,
+    HistorialRangosController.updateHistorialRangos,
+);
+router.delete(
+    '/historial-rangos/:id',
+    authMiddleware,
+    HistorialRangosController.deleteHistorialRangos,
+);
+router.get(
+    '/historial-rangos',
+    authMiddleware,
+    HistorialRangosController.getAllHistorialRangos,
+);
 
 router.get('/registro', AuthController.sendCallback);
 router.get('/callback', AuthController.callback);

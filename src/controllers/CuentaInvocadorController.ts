@@ -72,7 +72,14 @@ export class CuentaInvocadorController {
                 throw new ValidationError('Token no proporcionado.');
             }
             await cuentaInvocadorService.deleteCuentaInvocador(id, token);
-            resultHandler({ status: 204, success: true, result: 'Cuenta de invocador eliminada con éxito.' }, res);
+            resultHandler(
+                {
+                    status: 204,
+                    success: true,
+                    result: 'Cuenta de invocador eliminada con éxito.',
+                },
+                res,
+            );
         },
     );
 
@@ -95,7 +102,8 @@ export class CuentaInvocadorController {
                 throw new ValidationError('PUUID no proporcionado.');
             }
 
-            const updatedCuentaInvocador = await cuentaInvocadorService.updateNombreYTagInvocador(puuid);
+            const updatedCuentaInvocador =
+                await cuentaInvocadorService.updateNombreYTagInvocador(puuid);
 
             if (!updatedCuentaInvocador) {
                 throw new NotFoundError('Cuenta de invocador no encontrada.');
@@ -105,6 +113,6 @@ export class CuentaInvocadorController {
                 { status: 200, success: true, result: updatedCuentaInvocador },
                 res,
             );
-        }
+        },
     );
 }

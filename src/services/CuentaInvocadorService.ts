@@ -2,16 +2,20 @@ import { Repository } from 'typeorm';
 import axios from 'axios';
 
 import { CuentaInvocador } from '@/entities/CuentaInvocadorEntity';
+import { HistorialRangos } from '@/entities/HistorialRangosEntity';
 import AppDataSource from '@/config/ormconfig';
 import { AuthService } from '@/services/misc/AuthService';
 import { BadRequestError, NotFoundError } from '@/middlewares/appError';
 
 export class CuentaInvocadorService {
     private readonly cuentaInvocadorRepository: Repository<CuentaInvocador>;
+    private readonly historialRangosRepository: Repository<HistorialRangos>;
 
     constructor() {
         this.cuentaInvocadorRepository =
             AppDataSource.getRepository(CuentaInvocador);
+        this.historialRangosRepository =
+            AppDataSource.getRepository(HistorialRangos);
     }
 
     async createCuentaInvocador(
@@ -31,17 +35,40 @@ export class CuentaInvocadorService {
         // Llamar al nuevo endpoint para obtener el id
         const riotId = await this.getRiotIdByPuuid(puuid);
 
+        // Obtener el historial de rangos del invocador usando el id, filtrando por RANKED_SOLO_5x5
+        const historialRangos = await this.getHistorialRangosById(
+            riotId,
+            'RANKED_SOLO_5x5',
+        );
+
         data.puuid = puuid;
         data.cuentaId = riotId;
 
+        // Crear la cuenta de invocador y guardarla
         const cuentaInvocador = this.cuentaInvocadorRepository.create(data);
-        return await this.cuentaInvocadorRepository.save(cuentaInvocador);
+        const savedCuentaInvocador = await this.cuentaInvocadorRepository.save(
+            cuentaInvocador,
+        );
+
+        // Guardar el historial de rangos en la base de datos
+        await Promise.all(
+            historialRangos.map(async (rango) => {
+                const historial = this.historialRangosRepository.create({
+                    ...rango,
+                    cuentaInvocador: savedCuentaInvocador,
+                    fechaRegistro: Date.now(), // Fecha actual en formato EPOCH
+                });
+                await this.historialRangosRepository.save(historial);
+            }),
+        );
+
+        return savedCuentaInvocador;
     }
 
     async getCuentaInvocadorById(id: number): Promise<CuentaInvocador | null> {
         return await this.cuentaInvocadorRepository.findOne({
             where: { id },
-            relations: ['usuario'],
+            relations: ['usuario', 'historialRangos'],
         });
     }
 
@@ -58,26 +85,38 @@ export class CuentaInvocadorService {
         if (typeof decodedToken === 'string') {
             throw new Error('Invalid token');
         }
-
+    
         const userId = decodedToken.id;
         const cuentaInvocador = await this.getCuentaInvocadorById(id);
-
+    
         if (!cuentaInvocador) {
             throw new NotFoundError('Esta cuenta no existe');
         }
-
+    
         if (cuentaInvocador.usuario.id !== userId) {
             throw new BadRequestError('Esta no es tu cuenta');
         }
-
+    
+        // Eliminar el historial de rangos asociado
+        await this.historialRangosRepository.createQueryBuilder()
+            .delete()
+            .from(HistorialRangos)
+            .where("cuentaInvocadorId = :id", { id })
+            .execute();
+    
+        // Eliminar la cuenta de invocador
         await this.cuentaInvocadorRepository.delete(id);
     }
 
     async getAllCuentaInvocadores(): Promise<CuentaInvocador[]> {
-        return await this.cuentaInvocadorRepository.find();
+        return await this.cuentaInvocadorRepository.find({
+            relations: ['historialRangos'],
+        });
     }
 
-    async updateNombreYTagInvocador(puuid: string): Promise<CuentaInvocador | null> {
+    async updateNombreYTagInvocador(
+        puuid: string,
+    ): Promise<CuentaInvocador | null> {
         const riotApiKey = process.env.RIOT_API_KEY;
         const apiUrl = `https://europe.api.riotgames.com/riot/account/v1/accounts/by-puuid/${puuid}?api_key=${riotApiKey}`;
 
@@ -85,9 +124,10 @@ export class CuentaInvocadorService {
             const response = await axios.get(apiUrl);
             const { gameName, tagLine } = response.data;
 
-            const cuentaInvocador = await this.cuentaInvocadorRepository.findOne({
-                where: { puuid },
-            });
+            const cuentaInvocador =
+                await this.cuentaInvocadorRepository.findOne({
+                    where: { puuid },
+                });
 
             if (!cuentaInvocador) {
                 throw new NotFoundError('Cuenta de invocador no encontrada.');
@@ -99,9 +139,13 @@ export class CuentaInvocadorService {
             return await this.cuentaInvocadorRepository.save(cuentaInvocador);
         } catch (error: any) {
             if (error.response && error.response.status === 404) {
-                throw new BadRequestError('La cuenta de invocador no existe en la API de Riot.');
+                throw new BadRequestError(
+                    'La cuenta de invocador no existe en la API de Riot.',
+                );
             }
-            throw new BadRequestError('Error al actualizar el nombre y tag del invocador.');
+            throw new BadRequestError(
+                'Error al actualizar el nombre y tag del invocador.',
+            );
         }
     }
 
@@ -153,6 +197,43 @@ export class CuentaInvocadorService {
             return id;
         } catch (error) {
             throw new BadRequestError('Error al obtener el id de Riot.');
+        }
+    }
+
+    private async getHistorialRangosById(
+        summonerId: string,
+        filterLeagueId?: string,
+    ): Promise<Partial<HistorialRangos>[]> {
+        const riotApiKey = process.env.RIOT_API_KEY;
+        const apiUrl = `https://euw1.api.riotgames.com/lol/league/v4/entries/by-summoner/${summonerId}?api_key=${riotApiKey}`;
+
+        try {
+            const response = await axios.get(apiUrl);
+            const { data } = response;
+
+            // Filtra los resultados si se proporciona un filterLeagueId
+            const filteredData = filterLeagueId
+                ? data.filter((rango: any) => rango.leagueId === filterLeagueId)
+                : data;
+
+            return filteredData.map((rango: any) => ({
+                leagueId: rango.leagueId,
+                queueType: rango.queueType,
+                tier: rango.tier,
+                rank: rango.rank,
+                summonerId: rango.summonerId,
+                leaguePoints: rango.leaguePoints,
+                wins: rango.wins,
+                losses: rango.losses,
+                veteran: rango.veteran,
+                inactive: rango.inactive,
+                freshBlood: rango.freshBlood,
+                hotStreak: rango.hotStreak,
+            }));
+        } catch (error) {
+            throw new BadRequestError(
+                'Error al obtener el historial de rangos del invocador.',
+            );
         }
     }
 }
