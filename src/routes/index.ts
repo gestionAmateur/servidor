@@ -122,6 +122,7 @@ router.get(
     authMiddleware,
     CuentaInvocadorController.getAllCuentaInvocadores,
 );
+router.put('/cuentas-invocador/update/:puuid', authMiddleware, CuentaInvocadorController.updateNombreYTagInvocador);
 
 router.get('/registro', AuthController.sendCallback);
 router.get('/callback', AuthController.callback);

@@ -20,17 +20,13 @@ const swaggerDocument = JSON.parse(
 app.use(
     cors({
         origin: 'http://localhost:5173',
-        methods: ['GET', 'POST', 'PUT', 'DELETE'],
-        allowedHeaders: [
-            'Content-Type',
-            'Authorization',
-            'Origin',
-            'X-Requested-With',
-            'Accept',
-        ],
+        methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
+        credentials: true,
+        allowedHeaders: ['Content-Type', 'x-auth-token'],
     }),
 );
 
+app.options('*', cors());
 app.use(express.json());
 app.use(helmet());
 app.use(morgan('dev'));

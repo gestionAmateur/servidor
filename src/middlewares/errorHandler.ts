@@ -12,16 +12,24 @@ import {
     BadGatewayError,
     ServiceUnavailableError,
     GatewayTimeoutError,
+    NotFoundError,
 } from '@/middlewares/appError';
 import { resultHandler } from '@/middlewares/resultHandler';
 
 const errorHandler = (
     error: Error,
-    _req: Request, // Aunque no se utilice, es parte de la firma del middleware.
+    _req: Request,
     res: Response,
-    _next: NextFunction, // Aunque no se utilice, es parte de la firma del middleware.
+    _next: NextFunction,
 ) => {
     if (error instanceof ValidationError) {
+        return resultHandler(
+            { status: error.statusCode, success: false, result: error.message },
+            res,
+        );
+    }
+
+    if (error instanceof NotFoundError) {
         return resultHandler(
             { status: error.statusCode, success: false, result: error.message },
             res,

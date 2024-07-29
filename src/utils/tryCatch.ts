@@ -32,6 +32,10 @@ const tryCatch =
                     return next(
                         new ForeignKeyEntryError('La clave foránea no existe.'),
                     );
+                case 'ER_DATA_TOO_LONG':
+                    return next(
+                        new ForeignKeyEntryError('Los datos introducidos exceden el tamaño permitido.'),
+                    );
                 default:
                     console.error(error);
                     return next(error);

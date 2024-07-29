@@ -19,7 +19,7 @@ export class CuentaInvocador {
     @Column({ type: 'varchar', length: 5 })
     tagInvocador!: string;
 
-    @Column({ type: 'varchar', length: 12 })
+    @Column({ type: 'varchar', length: 8 })
     posicionInvocador!: string;
 
     @Column({ type: 'varchar', nullable: true, length: 128, })

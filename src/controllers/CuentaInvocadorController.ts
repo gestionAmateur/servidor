@@ -64,18 +64,15 @@ export class CuentaInvocadorController {
     static deleteCuentaInvocador = tryCatch(
         async (req: Request, res: Response): Promise<void> => {
             const id = parseInt(req.params.id, 10);
+            const token = req.headers['x-auth-token'] as string;
             if (isNaN(id)) {
                 throw new ValidationError('ID inválido.');
             }
-            await cuentaInvocadorService.deleteCuentaInvocador(id);
-            resultHandler(
-                {
-                    status: 204,
-                    success: true,
-                    result: 'Cuenta de invocador eliminada con éxito.',
-                },
-                res,
-            );
+            if (!token) {
+                throw new ValidationError('Token no proporcionado.');
+            }
+            await cuentaInvocadorService.deleteCuentaInvocador(id, token);
+            resultHandler({ status: 204, success: true, result: 'Cuenta de invocador eliminada con éxito.' }, res);
         },
     );
 
@@ -88,5 +85,26 @@ export class CuentaInvocadorController {
                 res,
             );
         },
+    );
+
+    static updateNombreYTagInvocador = tryCatch(
+        async (req: Request, res: Response): Promise<void> => {
+            const { puuid } = req.params;
+
+            if (!puuid) {
+                throw new ValidationError('PUUID no proporcionado.');
+            }
+
+            const updatedCuentaInvocador = await cuentaInvocadorService.updateNombreYTagInvocador(puuid);
+
+            if (!updatedCuentaInvocador) {
+                throw new NotFoundError('Cuenta de invocador no encontrada.');
+            }
+
+            resultHandler(
+                { status: 200, success: true, result: updatedCuentaInvocador },
+                res,
+            );
+        }
     );
 }
