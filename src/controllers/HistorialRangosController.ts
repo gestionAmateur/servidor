@@ -1,10 +1,12 @@
 import { Request, Response } from 'express';
 import { HistorialRangosService } from '@/services/HistorialRangosService';
+import { CuentaInvocadorService } from '@/services/CuentaInvocadorService';
 import { ValidationError, NotFoundError } from '@/middlewares/appError';
 import { resultHandler } from '@/middlewares/resultHandler';
 import tryCatch from '@/utils/tryCatch';
 
 const historialRangosService = new HistorialRangosService();
+const cuentaInvocadorService = new CuentaInvocadorService();
 
 export class HistorialRangosController {
     static createOrUpdateHistorialRangos = tryCatch(
@@ -14,8 +16,10 @@ export class HistorialRangosController {
                 throw new ValidationError('Puuid es requerido.');
             }
 
+            const cuenta = await cuentaInvocadorService.getCuentaInvocadorByRiotId(id);
+            console.log(cuenta)
             // Llama al servicio para crear o actualizar
-            const historialRangos = await historialRangosService.createOrUpdateHistorialRangos(id);
+            const historialRangos = await historialRangosService.createOrUpdateHistorialRangos(cuenta!);
             resultHandler(
                 { status: 200, success: true, result: historialRangos }, // Código 200 OK para PUT
                 res,

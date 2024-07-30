@@ -34,19 +34,24 @@ export class UsuarioService {
     }
 
     async getUsuarioDetails(id: number): Promise<any> {
-        const usuario = await this.getUsuarioById(id);
-
+        const usuario = await this.usuarioRepository.findOne({
+            where: { id },
+            relations: ['cuentasInvocador', 'cuentasInvocador.historialRangos'],
+        });
+    
         if (!usuario) {
             return null;
         }
-
+    
         const equiposHistorial = await this.historialEquipoRepository.find({
             where: { usuario: { id } },
             relations: ['equipo'],
         });
-
+    
         const equipos = equiposHistorial.map((historial) => historial.equipo);
 
+        
+    
         return {
             usuario: {
                 ...usuario,

@@ -3,6 +3,7 @@ import { HistorialRangos } from '@/entities/HistorialRangosEntity';
 import AppDataSource from '@/config/ormconfig';
 import { NotFoundError } from '@/middlewares/appError';
 import axios from 'axios'; // Asegúrate de instalar axios
+import { CuentaInvocador } from '@/entities/CuentaInvocadorEntity';
 
 export class HistorialRangosService {
     private readonly historialRangosRepository: Repository<HistorialRangos>;
@@ -11,17 +12,17 @@ export class HistorialRangosService {
         this.historialRangosRepository = AppDataSource.getRepository(HistorialRangos);
     }
 
-    private async fetchRiotData(puuid: string): Promise<any> {
+    private async fetchRiotData(id: string): Promise<any> {
         // Reemplaza con la URL real del endpoint de Riot que estés usando
-        const url = `https://euw1.api.riotgames.com/lol/league/v4/entries/by-summoner/${puuid}?api_key=${process.env.RIOT_API_KEY}`;
+        const url = `https://euw1.api.riotgames.com/lol/league/v4/entries/by-summoner/${id}?api_key=${process.env.RIOT_API_KEY}`;
         console.log(url)
         const response = await axios.get(url);
         return response.data;
     }
 
-    async createOrUpdateHistorialRangos(puuid: string): Promise<HistorialRangos[]> {
+    async createOrUpdateHistorialRangos(cuenta: CuentaInvocador): Promise<HistorialRangos[]> {
         // Obtener datos de Riot
-        const riotData = await this.fetchRiotData(puuid);
+        const riotData = await this.fetchRiotData(cuenta.cuentaId);
     
         if (!riotData || riotData.length === 0) {
             throw new NotFoundError('Datos de Riot no encontrados.');
@@ -34,6 +35,8 @@ export class HistorialRangosService {
             throw new NotFoundError('No se encontraron datos de RANKED_SOLO_5x5.');
         }
     
+        console.log(cuenta.id)
+        console.log(cuenta)
         // Mapear los datos filtrados a la estructura esperada
         const data = filteredData.map((item: any) => ({
             leagueId: item.leagueId,
@@ -49,16 +52,12 @@ export class HistorialRangosService {
             freshBlood: item.freshBlood,
             hotStreak: item.hotStreak,
             fechaRegistro: Date.now(),
+            cuentaInvocador: cuenta,
         }));
     
         // Crear o actualizar cada entrada
         const promises = data.map(async (item: HistorialRangos) => {
-            const existing = await this.historialRangosRepository.findOne({ where: { leagueId: item.leagueId } });
-            if (existing) {
-                return this.historialRangosRepository.merge(existing, item);
-            } else {
-                return this.historialRangosRepository.create(item);
-            }
+            return this.historialRangosRepository.create(item);
         });
     
         // Guardar todas las entradas en la base de datos

@@ -48,10 +48,22 @@ export class CuentaInvocadorService {
     }
 
     async getCuentaInvocadorById(id: number): Promise<CuentaInvocador | null> {
-        return await this.cuentaInvocadorRepository.findOne({
+        const cuentaInvocador = await this.cuentaInvocadorRepository.findOne({
             where: { id },
             relations: ['usuario', 'historialRangos'],
         });
+
+        return cuentaInvocador;
+    }
+
+    async getCuentaInvocadorByRiotId(
+        cuentaId: string,
+    ): Promise<CuentaInvocador | null> {
+        const cuentaInvocador = await this.cuentaInvocadorRepository.findOne({
+            where: { cuentaId },
+        });
+
+        return cuentaInvocador;
     }
 
     async updateCuentaInvocador(
@@ -67,25 +79,26 @@ export class CuentaInvocadorService {
         if (typeof decodedToken === 'string') {
             throw new Error('Invalid token');
         }
-    
+
         const userId = decodedToken.id;
         const cuentaInvocador = await this.getCuentaInvocadorById(id);
-    
+
         if (!cuentaInvocador) {
             throw new NotFoundError('Esta cuenta no existe');
         }
-    
+
         if (cuentaInvocador.usuario.id !== userId) {
             throw new BadRequestError('Esta no es tu cuenta');
         }
-    
+
         // Eliminar el historial de rangos asociado
-        await this.historialRangosRepository.createQueryBuilder()
+        await this.historialRangosRepository
+            .createQueryBuilder()
             .delete()
             .from(HistorialRangos)
-            .where("cuentaInvocadorId = :id", { id })
+            .where('cuentaInvocadorId = :id', { id })
             .execute();
-    
+
         // Eliminar la cuenta de invocador
         await this.cuentaInvocadorRepository.delete(id);
     }
