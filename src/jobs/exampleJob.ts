@@ -2,7 +2,7 @@
 import cron from 'node-cron';
 
 export const exampleJob = () => {
-  cron.schedule('* * * * *', () => {
-    console.log('Ejecutando exampleJob cada minuto');
-  });
+    cron.schedule('* * * * *', () => {
+        console.log('Ejecutando exampleJob cada minuto');
+    });
 };

@@ -16,10 +16,14 @@ export class HistorialRangosController {
                 throw new ValidationError('Puuid es requerido.');
             }
 
-            const cuenta = await cuentaInvocadorService.getCuentaInvocadorByRiotId(id);
-            console.log(cuenta)
+            const cuenta =
+                await cuentaInvocadorService.getCuentaInvocadorByRiotId(id);
+            console.log(cuenta);
             // Llama al servicio para crear o actualizar
-            const historialRangos = await historialRangosService.createOrUpdateHistorialRangos(cuenta!);
+            const historialRangos =
+                await historialRangosService.createOrUpdateHistorialRangos(
+                    cuenta!,
+                );
             resultHandler(
                 { status: 200, success: true, result: historialRangos }, // Código 200 OK para PUT
                 res,
@@ -34,7 +38,8 @@ export class HistorialRangosController {
                 throw new ValidationError('ID inválido.');
             }
 
-            const historialRangos = await historialRangosService.getHistorialRangosById(id);
+            const historialRangos =
+                await historialRangosService.getHistorialRangosById(id);
             if (!historialRangos) {
                 throw new NotFoundError('Historial de rangos no encontrado.');
             }
@@ -67,7 +72,8 @@ export class HistorialRangosController {
 
     static getAllHistorialRangos = tryCatch(
         async (_: Request, res: Response): Promise<void> => {
-            const historialRangos = await historialRangosService.getAllHistorialRangos();
+            const historialRangos =
+                await historialRangosService.getAllHistorialRangos();
             resultHandler(
                 { status: 200, success: true, result: historialRangos },
                 res,

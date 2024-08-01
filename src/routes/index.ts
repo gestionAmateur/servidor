@@ -5,6 +5,7 @@ import { ParticipanteController } from '@/controllers/ParticipanteController';
 import { ObjetivoController } from '@/controllers/ObjetivoController';
 import { HistorialEquipoController } from '@/controllers/HistorialEquipoController';
 import { CuentaInvocadorController } from '@/controllers/CuentaInvocadorController';
+import { EquipoCompetitivoController } from '@/controllers/EquipoCompetitivoController';
 
 import { AuthController } from '@/controllers/misc/AuthController';
 import { authMiddleware } from '@/middlewares/auth';
@@ -17,6 +18,21 @@ router.get('/health', HealthController.checkHealth);
 
 router.post('/usuarios', authMiddleware, UsuarioController.createUsuario);
 router.get('/usuarios/:id', authMiddleware, UsuarioController.getUsuarioById);
+router.get(
+    '/usuarios/nombre/:nombre',
+    authMiddleware,
+    UsuarioController.getUsuarioByNombre,
+);
+router.post(
+    '/usuarios/:usuarioId/equipos/:equipoId',
+    authMiddleware,
+    UsuarioController.addEquipoToUsuario,
+);
+router.delete(
+    '/usuarios/:usuarioId/equipos/:equipoId',
+    authMiddleware,
+    UsuarioController.removeEquipoFromUsuario,
+);
 router.put('/usuarios/:id', authMiddleware, UsuarioController.updateUsuario);
 router.delete('/usuarios/:id', authMiddleware, UsuarioController.deleteUsuario);
 router.get('/usuarios', authMiddleware, UsuarioController.getAllUsuarios);
@@ -73,9 +89,35 @@ router.delete(
 router.get('/objetivos', authMiddleware, ObjetivoController.getAllObjetivos);
 
 router.post(
+    '/equipos',
+    authMiddleware,
+    EquipoCompetitivoController.createEquipoCompetitivo,
+);
+router.get(
+    '/equipos/:id',
+    authMiddleware,
+    EquipoCompetitivoController.getEquipoCompetitivoById,
+);
+router.put(
+    '/equipos/:id',
+    authMiddleware,
+    EquipoCompetitivoController.updateEquipoCompetitivo,
+);
+router.delete(
+    '/equipos/:id',
+    authMiddleware,
+    EquipoCompetitivoController.deleteEquipoCompetitivo,
+);
+router.get(
+    '/equipos',
+    authMiddleware,
+    EquipoCompetitivoController.getAllEquipoCompetitivos,
+);
+
+router.post(
     '/historial-equipos',
     authMiddleware,
-    HistorialEquipoController.createHistorialEquipo,
+    HistorialEquipoController.createOrUpdateHistorialEquipo,
 );
 router.get(
     '/historial-equipos/:id',

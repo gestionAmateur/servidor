@@ -1,17 +1,20 @@
 import { Repository } from 'typeorm';
 import AppDataSource from '@/config/ormconfig';
 import { Usuario } from '@/entities/UsuarioEntity';
-import { HistorialEquipo } from '@/entities/HistorialEquipoEntity';
 import { sesionService } from './misc/SesionService';
+import { EquipoCompetitivo } from '@/entities/EquipoCompetitivoEntity';
+import { HistorialEquipoService } from './HistorialEquipoService';
+import { NotFoundError } from '@/middlewares/appError';
 
 export class UsuarioService {
     private readonly usuarioRepository: Repository<Usuario>;
-    private readonly historialEquipoRepository: Repository<HistorialEquipo>;
+    private readonly equipoRepository: Repository<EquipoCompetitivo>;
+    private readonly historialEquipoService: HistorialEquipoService;
 
     constructor() {
         this.usuarioRepository = AppDataSource.getRepository(Usuario);
-        this.historialEquipoRepository =
-            AppDataSource.getRepository(HistorialEquipo);
+        this.equipoRepository = AppDataSource.getRepository(EquipoCompetitivo);
+        this.historialEquipoService = new HistorialEquipoService();
     }
 
     async createUsuario(data: Partial<Usuario>): Promise<Usuario> {
@@ -19,47 +22,59 @@ export class UsuarioService {
         return await this.usuarioRepository.save(usuario);
     }
 
-    async getUsuarioById(id: number): Promise<Usuario | null> {
+    private async getUsuarioWithRelations(id: number): Promise<Usuario | null> {
         return await this.usuarioRepository.findOne({
             where: { id },
-            relations: ['cuentasInvocador', 'equipoActual', 'historial.equipo'],
+            relations: ['cuentasInvocador', 'equipos', 'historial.equipo'],
         });
     }
 
-    async getUsuarioByDiscordId(discordId: string): Promise<Usuario | null> {
-        return await this.usuarioRepository.findOne({
-            where: { discordId },
-            relations: ['cuentasInvocador', 'equipoActual', 'historial.equipo'],
-        });
-    }
-
-    async getUsuarioDetails(id: number): Promise<any> {
-        const usuario = await this.usuarioRepository.findOne({
-            where: { id },
-            relations: ['cuentasInvocador', 'cuentasInvocador.historialRangos'],
-        });
-    
+    private async getUsuarioWithDetails(id: number) {
+        const usuario = await this.getUsuarioWithRelations(id);
         if (!usuario) {
             return null;
         }
-    
-        const equiposHistorial = await this.historialEquipoRepository.find({
-            where: { usuario: { id } },
-            relations: ['equipo'],
-        });
-    
-        const equipos = equiposHistorial.map((historial) => historial.equipo);
 
-        
-    
+        // Devolver el usuario sin `equiposHistorial`
         return {
-            usuario: {
-                ...usuario,
-                cuentasInvocador: usuario.cuentasInvocador,
-                equipoActual: usuario.equipoActual,
-                equiposHistorial: equipos,
-            },
+            id: usuario.id,
+            discordId: usuario.discordId,
+            discordAvatar: usuario.discordAvatar,
+            nombre: usuario.nombre,
+            email: usuario.email,
+            rol: usuario.rol,
+            redesSociales: usuario.redesSociales,
+            cuentasInvocador: usuario.cuentasInvocador,
+            equipos: usuario.equipos,
+            historial: usuario.historial,
+            // No incluir `equiposHistorial` en el resultado
         };
+    }
+
+    async getUsuarioById(id: number): Promise<any> {
+        return await this.getUsuarioWithDetails(id);
+    }
+
+    async getUsuarioByNombre(nombre: string): Promise<any> {
+        const usuario = await this.usuarioRepository.findOne({
+            where: { nombre },
+            relations: ['cuentasInvocador', 'equipos', 'historial.equipo'],
+        });
+        if (!usuario) {
+            return null;
+        }
+        return await this.getUsuarioWithDetails(usuario.id);
+    }
+
+    async getUsuarioByDiscordId(discordId: string): Promise<any> {
+        const usuario = await this.usuarioRepository.findOne({
+            where: { discordId },
+            relations: ['cuentasInvocador', 'equipos', 'historial.equipo'],
+        });
+        if (!usuario) {
+            return null;
+        }
+        return await this.getUsuarioWithDetails(usuario.id);
     }
 
     async updateUsuario(
@@ -80,11 +95,73 @@ export class UsuarioService {
 
     async getUsuarioDetailsByToken(token: string): Promise<any> {
         const sesion = await sesionService.getSesion(token);
-
         if (!sesion || !sesion.usuario) {
             return null;
         }
+        return await this.getUsuarioWithDetails(sesion.usuario.id);
+    }
 
-        return await this.getUsuarioDetails(sesion.usuario.id);
+    async addEquipoToUsuario(
+        usuarioId: number,
+        equipoId: number,
+    ): Promise<Usuario> {
+        const usuario = await this.usuarioRepository.findOne({
+            where: { id: usuarioId },
+            relations: ['equipos'],
+        });
+        const equipo = await this.equipoRepository.findOneBy({ id: equipoId });
+
+        if (!usuario) {
+            throw new NotFoundError('Usuario no encontrado.');
+        }
+        if (!equipo) {
+            throw new NotFoundError('Equipo no encontrado.');
+        }
+
+        // Añadir el equipo al usuario si no está presente
+        if (!usuario.equipos.some((e) => e.id === equipoId)) {
+            usuario.equipos.push(equipo);
+            await this.usuarioRepository.save(usuario);
+
+            // Crear o actualizar el historial para el equipo
+            await this.historialEquipoService.createOrUpdateHistorial(
+                usuarioId,
+                equipoId,
+            );
+        }
+
+        return usuario;
+    }
+
+    async removeEquipoFromUsuario(
+        usuarioId: number,
+        equipoId: number,
+    ): Promise<Usuario> {
+        const usuario = await this.usuarioRepository.findOne({
+            where: { id: usuarioId },
+            relations: ['equipos'],
+        });
+        const equipo = await this.equipoRepository.findOneBy({ id: equipoId });
+
+        if (!usuario) {
+            throw new NotFoundError('Usuario no encontrado.');
+        }
+        if (!equipo) {
+            throw new NotFoundError('Equipo no encontrado.');
+        }
+
+        // Eliminar el equipo del usuario si está presente
+        if (usuario.equipos.some((e) => e.id === equipoId)) {
+            usuario.equipos = usuario.equipos.filter((e) => e.id !== equipoId);
+            await this.usuarioRepository.save(usuario);
+
+            // Cerrar el historial para el equipo
+            await this.historialEquipoService.closeHistorial(
+                usuarioId,
+                equipoId,
+            );
+        }
+
+        return usuario;
     }
 }

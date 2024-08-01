@@ -1,9 +1,4 @@
-import {
-    Entity,
-    PrimaryGeneratedColumn,
-    Column,
-    ManyToOne,
-} from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, ManyToOne } from 'typeorm';
 import { CuentaInvocador } from '@/entities/CuentaInvocadorEntity';
 
 @Entity('historial_rangos')
@@ -50,6 +45,9 @@ export class HistorialRangos {
     @Column({ type: 'bigint' })
     fechaRegistro!: number;
 
-    @ManyToOne(() => CuentaInvocador, (cuentaInvocador) => cuentaInvocador.historialRangos)
+    @ManyToOne(
+        () => CuentaInvocador,
+        (cuentaInvocador) => cuentaInvocador.historialRangos,
+    )
     cuentaInvocador!: CuentaInvocador;
 }

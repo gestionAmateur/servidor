@@ -7,12 +7,24 @@ import tryCatch from '@/utils/tryCatch';
 const historialEquipoService = new HistorialEquipoService();
 
 export class HistorialEquipoController {
-    static createHistorialEquipo = tryCatch(
+    static createOrUpdateHistorialEquipo = tryCatch(
         async (req: Request, res: Response): Promise<void> => {
+            const { usuarioId, equipoId } = req.body;
+
+            if (!usuarioId || !equipoId) {
+                throw new Error(
+                    'Faltan datos necesarios: usuarioId y equipoId',
+                );
+            }
+
             const historialEquipo =
-                await historialEquipoService.createHistorialEquipo(req.body);
+                await historialEquipoService.createOrUpdateHistorial(
+                    usuarioId,
+                    equipoId,
+                );
+
             resultHandler(
-                { status: 201, success: true, result: historialEquipo },
+                { status: 200, success: true, result: historialEquipo },
                 res,
             );
         },
@@ -71,10 +83,13 @@ export class HistorialEquipoController {
         async (_: Request, res: Response): Promise<void> => {
             const historialEquipos =
                 await historialEquipoService.getAllHistorialEquipos();
-            resultHandler(
-                { status: 200, success: true, result: historialEquipos },
-                res,
-            );
+            // Convertir fechas a formato EPOCH en la respuesta
+            const result = historialEquipos.map((historial) => ({
+                ...historial,
+                fechaInicio: historial.fechaInicio,
+                fechaFin: historial.fechaFin,
+            }));
+            resultHandler({ status: 200, success: true, result }, res);
         },
     );
 }

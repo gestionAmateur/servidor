@@ -1,4 +1,10 @@
-import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from 'typeorm';
+import {
+    Entity,
+    PrimaryGeneratedColumn,
+    Column,
+    OneToMany,
+    ManyToMany,
+} from 'typeorm';
 import { Usuario } from '@/entities/UsuarioEntity';
 import { Participante } from '@/entities/ParticipanteEntity';
 import { Ban } from '@/entities/BanEntity';
@@ -11,19 +17,22 @@ export class EquipoCompetitivo {
     @PrimaryGeneratedColumn()
     id!: number;
 
-    @Column({ type: 'varchar', length: 128, unique: true })
+    @Column({ type: 'varchar', length: 128 })
     nombre!: string;
 
-    @Column({ type: 'text', nullable: true })
+    @Column({ type: 'varchar', length: 56, nullable: true })
+    logo!: string;
+
+    @Column({ type: 'varchar', length: 255, nullable: true })
     descripcion?: string;
 
     @Column({ type: 'date', nullable: true })
-    fundacion?: Date;
+    fundacion?: string;
 
     @Column({ type: 'varchar', length: 64, nullable: true })
     pais?: string;
 
-    @OneToMany(() => Usuario, (usuario) => usuario.equipoActual)
+    @ManyToMany(() => Usuario, (usuario) => usuario.equipos)
     usuarios!: Usuario[];
 
     @OneToMany(() => Participante, (participante) => participante.equipo)

@@ -13,9 +13,9 @@ export class HistorialEquipo {
     @ManyToOne(() => EquipoCompetitivo, (equipo) => equipo.historial)
     equipo!: EquipoCompetitivo;
 
-    @Column({ type: 'date' })
-    fechaInicio!: Date;
+    @Column({ type: 'bigint' })
+    fechaInicio!: number;
 
-    @Column({ type: 'date', nullable: true })
-    fechaFin?: Date;
+    @Column({ type: 'bigint', nullable: true })
+    fechaFin?: number;
 }

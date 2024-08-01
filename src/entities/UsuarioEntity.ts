@@ -2,7 +2,8 @@ import {
     Entity,
     PrimaryGeneratedColumn,
     Column,
-    ManyToOne,
+    ManyToMany,
+    JoinTable,
     OneToMany,
 } from 'typeorm';
 import { EquipoCompetitivo } from '@/entities/EquipoCompetitivoEntity';
@@ -38,10 +39,9 @@ export class Usuario {
         discord?: string;
     };
 
-    @ManyToOne(() => EquipoCompetitivo, (equipo) => equipo.usuarios, {
-        nullable: true,
-    })
-    equipoActual?: EquipoCompetitivo;
+    @ManyToMany(() => EquipoCompetitivo, (equipo) => equipo.usuarios)
+    @JoinTable()
+    equipos!: EquipoCompetitivo[];
 
     @OneToMany(() => CuentaInvocador, (cuenta) => cuenta.usuario)
     cuentasInvocador!: CuentaInvocador[];

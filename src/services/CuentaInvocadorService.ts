@@ -40,9 +40,8 @@ export class CuentaInvocadorService {
 
         // Crear la cuenta de invocador y guardarla
         const cuentaInvocador = this.cuentaInvocadorRepository.create(data);
-        const savedCuentaInvocador = await this.cuentaInvocadorRepository.save(
-            cuentaInvocador,
-        );
+        const savedCuentaInvocador =
+            await this.cuentaInvocadorRepository.save(cuentaInvocador);
 
         return savedCuentaInvocador;
     }

@@ -26,6 +26,18 @@ export class UsuarioController {
         },
     );
 
+    static getUsuarioByNombre = tryCatch(
+        async (req: Request, res: Response): Promise<void> => {
+            const usuario = await usuarioService.getUsuarioByNombre(
+                req.params.nombre,
+            );
+            if (!usuario) {
+                throw new NotFoundError('Usuario no encontrado.');
+            }
+            resultHandler({ status: 200, success: true, result: usuario }, res);
+        },
+    );
+
     static updateUsuario = tryCatch(
         async (req: Request, res: Response): Promise<void> => {
             const usuario = await usuarioService.updateUsuario(
@@ -90,6 +102,30 @@ export class UsuarioController {
                 { status: 200, success: true, result: usuarioDetails },
                 res,
             );
+        },
+    );
+
+    static addEquipoToUsuario = tryCatch(
+        async (req: Request, res: Response): Promise<void> => {
+            const usuarioId = parseInt(req.params.usuarioId, 10);
+            const equipoId = parseInt(req.params.equipoId, 10);
+            const usuario = await usuarioService.addEquipoToUsuario(
+                usuarioId,
+                equipoId,
+            );
+            resultHandler({ status: 200, success: true, result: usuario }, res);
+        },
+    );
+
+    static removeEquipoFromUsuario = tryCatch(
+        async (req: Request, res: Response): Promise<void> => {
+            const usuarioId = parseInt(req.params.usuarioId, 10);
+            const equipoId = parseInt(req.params.equipoId, 10);
+            const usuario = await usuarioService.removeEquipoFromUsuario(
+                usuarioId,
+                equipoId,
+            );
+            resultHandler({ status: 200, success: true, result: usuario }, res);
         },
     );
 }
