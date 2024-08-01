@@ -114,11 +114,6 @@ router.get(
     EquipoCompetitivoController.getAllEquipoCompetitivos,
 );
 
-router.post(
-    '/historial-equipos',
-    authMiddleware,
-    HistorialEquipoController.createOrUpdateHistorialEquipo,
-);
 router.get(
     '/historial-equipos/:id',
     authMiddleware,
