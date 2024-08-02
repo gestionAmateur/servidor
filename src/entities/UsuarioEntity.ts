@@ -10,6 +10,7 @@ import { EquipoCompetitivo } from '@/entities/EquipoCompetitivoEntity';
 import { CuentaInvocador } from '@/entities/CuentaInvocadorEntity';
 import { HistorialEquipo } from '@/entities/HistorialEquipoEntity';
 import { Sesion } from '@/entities/misc/SesionEntity';
+import { Notificacion } from '@/entities/misc/NotificationEntity';
 
 @Entity('usuarios')
 export class Usuario {
@@ -51,4 +52,7 @@ export class Usuario {
 
     @OneToMany(() => Sesion, (sesion) => sesion.usuario)
     sesiones!: Sesion[];
+
+    @OneToMany(() => Notificacion, (notificacion) => notificacion.usuario)
+    notificaciones!: Notification[];
 }

@@ -25,7 +25,7 @@ export class UsuarioService {
     private async getUsuarioWithRelations(id: number): Promise<Usuario | null> {
         return await this.usuarioRepository.findOne({
             where: { id },
-            relations: ['cuentasInvocador', 'equipos', 'historial.equipo'],
+            relations: ['cuentasInvocador', 'equipos', 'equipos.usuarios', 'historial.equipo'],
         });
     }
 
@@ -37,16 +37,18 @@ export class UsuarioService {
 
         // Devolver el usuario sin `equiposHistorial`
         return {
-            id: usuario.id,
-            discordId: usuario.discordId,
-            discordAvatar: usuario.discordAvatar,
-            nombre: usuario.nombre,
-            email: usuario.email,
-            rol: usuario.rol,
-            redesSociales: usuario.redesSociales,
-            cuentasInvocador: usuario.cuentasInvocador,
-            equipos: usuario.equipos,
-            historial: usuario.historial,
+            usuario: {
+                id: usuario.id,
+                discordId: usuario.discordId,
+                discordAvatar: usuario.discordAvatar,
+                nombre: usuario.nombre,
+                email: usuario.email,
+                rol: usuario.rol,
+                redesSociales: usuario.redesSociales,
+                cuentasInvocador: usuario.cuentasInvocador,
+                equipos: usuario.equipos,
+                historial: usuario.historial,
+            },
             // No incluir `equiposHistorial` en el resultado
         };
     }

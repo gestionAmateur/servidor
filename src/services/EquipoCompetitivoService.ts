@@ -19,7 +19,11 @@ export class EquipoCompetitivoService {
     async getEquipoCompetitivoById(
         id: number,
     ): Promise<EquipoCompetitivo | null> {
-        return await this.equipoRepository.findOneBy({ id });
+        // Incluir la relación con los usuarios
+        return await this.equipoRepository.findOne({
+            where: { id },
+            relations: ['usuarios'],
+        });
     }
 
     async updateEquipoCompetitivo(
@@ -35,6 +39,8 @@ export class EquipoCompetitivoService {
     }
 
     async getAllEquipoCompetitivos(): Promise<EquipoCompetitivo[]> {
-        return await this.equipoRepository.find();
+        return await this.equipoRepository.find({
+            relations: ['usuarios'],
+        });
     }
 }
