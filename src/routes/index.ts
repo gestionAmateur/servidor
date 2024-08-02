@@ -11,6 +11,7 @@ import { AuthController } from '@/controllers/misc/AuthController';
 import { authMiddleware } from '@/middlewares/auth';
 import { HealthController } from '@/controllers/misc/HealthController';
 import { HistorialRangosController } from '@/controllers/HistorialRangosController';
+import { NotificacionController } from '@/controllers/misc/NotificationController';
 
 const router = express.Router();
 
@@ -181,6 +182,32 @@ router.delete(
 router.get(
     '/historial-rangos',
     HistorialRangosController.getAllHistorialRangos,
+);
+
+router.post(
+    '/notificaciones',
+    authMiddleware,
+    NotificacionController.crearNotificacion,
+);
+router.get(
+    '/notificaciones/usuario/:usuarioId',
+    authMiddleware,
+    NotificacionController.obtenerNotificacionesPorUsuario,
+);
+router.put(
+    '/notificaciones/:id/leida',
+    authMiddleware,
+    NotificacionController.marcarComoLeida,
+);
+router.put(
+    '/notificaciones/:id/borrada',
+    authMiddleware,
+    NotificacionController.borrarNotificacion,
+);
+router.delete(
+    '/notificaciones/:id',
+    authMiddleware,
+    NotificacionController.eliminarNotificacionPermanente,
 );
 
 router.get('/registro', AuthController.sendCallback);
