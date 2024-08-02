@@ -10,16 +10,30 @@ export class NotificacionController {
     static crearNotificacion = tryCatch(
         async (req: Request, res: Response): Promise<void> => {
             const { usuarioId, titulo, descripcion, enviadoPorId } = req.body;
-            const notificacion = await notificacionService.crearNotificacion(usuarioId, titulo, descripcion, enviadoPorId);
-            resultHandler({ status: 201, success: true, result: notificacion }, res);
+            const notificacion = await notificacionService.crearNotificacion(
+                usuarioId,
+                titulo,
+                descripcion,
+                enviadoPorId,
+            );
+            resultHandler(
+                { status: 201, success: true, result: notificacion },
+                res,
+            );
         },
     );
 
     static obtenerNotificacionesPorUsuario = tryCatch(
         async (req: Request, res: Response): Promise<void> => {
             const usuarioId = parseInt(req.params.usuarioId, 10);
-            const notificaciones = await notificacionService.obtenerNotificacionesPorUsuario(usuarioId);
-            resultHandler({ status: 200, success: true, result: notificaciones }, res);
+            const notificaciones =
+                await notificacionService.obtenerNotificacionesPorUsuario(
+                    usuarioId,
+                );
+            resultHandler(
+                { status: 200, success: true, result: notificaciones },
+                res,
+            );
         },
     );
 
@@ -30,7 +44,10 @@ export class NotificacionController {
             if (!notificacion) {
                 throw new NotFoundError('Notificación no encontrada.');
             }
-            resultHandler({ status: 200, success: true, result: notificacion }, res);
+            resultHandler(
+                { status: 200, success: true, result: notificacion },
+                res,
+            );
         },
     );
 
@@ -38,7 +55,14 @@ export class NotificacionController {
         async (req: Request, res: Response): Promise<void> => {
             const id = parseInt(req.params.id, 10);
             await notificacionService.borrarNotificacion(id);
-            resultHandler({ status: 200, success: true, result: 'Notificación marcada como borrada.' }, res);
+            resultHandler(
+                {
+                    status: 200,
+                    success: true,
+                    result: 'Notificación marcada como borrada.',
+                },
+                res,
+            );
         },
     );
 
@@ -46,7 +70,14 @@ export class NotificacionController {
         async (req: Request, res: Response): Promise<void> => {
             const id = parseInt(req.params.id, 10);
             await notificacionService.eliminarNotificacionPermanente(id);
-            resultHandler({ status: 204, success: true, result: 'Notificación eliminada permanentemente.' }, res);
+            resultHandler(
+                {
+                    status: 204,
+                    success: true,
+                    result: 'Notificación eliminada permanentemente.',
+                },
+                res,
+            );
         },
     );
 }

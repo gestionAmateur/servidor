@@ -25,7 +25,13 @@ export class UsuarioService {
     private async getUsuarioWithRelations(id: number): Promise<Usuario | null> {
         return await this.usuarioRepository.findOne({
             where: { id },
-            relations: ['cuentasInvocador', 'equipos', 'equipos.usuarios', 'historial.equipo', 'notificaciones'],
+            relations: [
+                'cuentasInvocador',
+                'equipos',
+                'equipos.usuarios',
+                'historial.equipo',
+                'notificaciones',
+            ],
         });
     }
 
@@ -48,7 +54,7 @@ export class UsuarioService {
                 cuentasInvocador: usuario.cuentasInvocador,
                 equipos: usuario.equipos,
                 historial: usuario.historial,
-                notificaciones: usuario.notificaciones
+                notificaciones: usuario.notificaciones,
             },
             // No incluir `equiposHistorial` en el resultado
         };
