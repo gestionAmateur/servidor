@@ -94,8 +94,9 @@ export class AuthController {
 
                 const createdAt = Math.floor(Date.now() / 1000);
                 const expiredAt = createdAt + 2592000;
+                console.log(usuarioFinal);
                 await sesionService.createSesion({
-                    usuario: { id: usuarioFinal.id } as any,
+                    usuario: { id: usuarioFinal['usuario'].id } as any,
                     token: token,
                     createdAt: createdAt,
                     expiredAt: expiredAt,
