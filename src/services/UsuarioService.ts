@@ -99,7 +99,9 @@ export class UsuarioService {
     }
 
     async getAllUsuarios(): Promise<Usuario[]> {
-        return await this.usuarioRepository.find();
+        return await this.usuarioRepository.find({
+            relations: ['equipos']
+        });
     }
 
     async getUsuarioDetailsByToken(token: string): Promise<any> {
