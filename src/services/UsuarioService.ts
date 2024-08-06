@@ -100,7 +100,7 @@ export class UsuarioService {
 
     async getAllUsuarios(): Promise<Usuario[]> {
         return await this.usuarioRepository.find({
-            relations: ['equipos']
+            relations: ['equipos'],
         });
     }
 
