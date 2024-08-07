@@ -22,7 +22,7 @@ export class EquipoCompetitivoService {
         // Incluir la relación con los usuarios
         return await this.equipoRepository.findOne({
             where: { id },
-            relations: ['usuarios'],
+            relations: ['usuarios', 'fundador'],
         });
     }
 
@@ -40,7 +40,7 @@ export class EquipoCompetitivoService {
 
     async getAllEquipoCompetitivos(): Promise<EquipoCompetitivo[]> {
         return await this.equipoRepository.find({
-            relations: ['usuarios'],
+            relations: ['usuarios', 'fundador'],
         });
     }
 }

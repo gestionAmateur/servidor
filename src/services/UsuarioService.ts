@@ -29,6 +29,7 @@ export class UsuarioService {
                 'cuentasInvocador',
                 'equipos',
                 'equipos.usuarios',
+                'equipos.fundador',
                 'historial.equipo',
                 'notificaciones',
             ],

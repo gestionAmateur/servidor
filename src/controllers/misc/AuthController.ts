@@ -15,6 +15,7 @@ export class AuthController {
             }&response_type=code&redirect_uri=${encodeURIComponent(
                 process.env.DISCORD_REDIRECT_URI!,
             )}&scope=identify%20email`;
+            console.log(redirectUri);
 
             // Redirige al cliente directamente a Discord
             res.redirect(redirectUri);
@@ -95,6 +96,7 @@ export class AuthController {
                 const createdAt = Math.floor(Date.now() / 1000);
                 const expiredAt = createdAt + 2592000;
                 console.log(usuarioFinal);
+                console.log(usuarioFinal['usuario'].id);
                 await sesionService.createSesion({
                     usuario: { id: usuarioFinal['usuario'].id } as any,
                     token: token,

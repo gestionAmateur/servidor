@@ -4,6 +4,7 @@ import {
     Column,
     OneToMany,
     ManyToMany,
+    ManyToOne,
 } from 'typeorm';
 import { Usuario } from '@/entities/UsuarioEntity';
 import { Participante } from '@/entities/ParticipanteEntity';
@@ -26,14 +27,17 @@ export class EquipoCompetitivo {
     @Column({ type: 'varchar', length: 255, nullable: true })
     descripcion?: string;
 
-    @Column({ type: 'date', nullable: true })
-    fundacion?: string;
+    @Column({ type: 'int', nullable: true })
+    fundacion?: number;
 
     @Column({ type: 'varchar', length: 64, nullable: true })
     pais?: string;
 
     @ManyToMany(() => Usuario, (usuario) => usuario.equipos)
     usuarios!: Usuario[];
+
+    @ManyToOne(() => Usuario, { nullable: true })
+    fundador!: Usuario;
 
     @OneToMany(() => Participante, (participante) => participante.equipo)
     participantes!: Participante[];
